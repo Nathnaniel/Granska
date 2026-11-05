@@ -642,7 +642,8 @@ async function serveAsset(res, match) {
   res.end(file);
 }
 
-function createApp(deps = {}) {
+// The request handler on its own, for hosts that bring their own server.
+function createHandler(deps = {}) {
   const {
     verify = verifyEmail,
     limiter = createRateLimiter(),
@@ -708,7 +709,7 @@ function createApp(deps = {}) {
     res.end();
   }
 
-  return http.createServer(async (req, res) => {
+  return async (req, res) => {
     try {
       const { pathname } = new URL(req.url, 'http://localhost');
       if (pathname === '/api/verify') {
@@ -729,7 +730,11 @@ function createApp(deps = {}) {
       if (!res.headersSent) sendJson(res, 500, { error: SERVER_ERROR_MESSAGE });
       else res.destroy();
     }
-  });
+  };
+}
+
+function createApp(deps = {}) {
+  return http.createServer(createHandler(deps));
 }
 
 if (require.main === module) {
@@ -751,6 +756,7 @@ module.exports = {
   clientIp,
   createApp,
   createCachedLookup,
+  createHandler,
   createMetrics,
   createRateLimiter,
   editDistance,

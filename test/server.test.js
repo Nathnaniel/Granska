@@ -1,5 +1,6 @@
 'use strict';
 const assert = require('node:assert/strict');
+const http = require('node:http');
 const net = require('node:net');
 const { after, before, describe, test } = require('node:test');
 
@@ -643,5 +644,21 @@ describe('HTTP', () => {
     assert.equal(res.status, 429);
     assert.equal(data.error, 'Too many checks. Wait a minute and try again.');
     assert.ok(Number(res.headers.get('retry-after')) > 0);
+  });
+});
+
+describe('Vercel entry point', () => {
+  test('exports a request handler that serves the page', async () => {
+    const handler = require('../api/index.js');
+    assert.equal(typeof handler, 'function');
+    const server = http.createServer(handler);
+    await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+    try {
+      const res = await fetch(`http://127.0.0.1:${server.address().port}/`);
+      assert.equal(res.status, 200);
+      assert.match(await res.text(), /Is this email real\?/);
+    } finally {
+      server.close();
+    }
   });
 });

@@ -27,6 +27,7 @@ SKIP_MAILBOX=1 npm run dev
 | Path | What it is |
 | --- | --- |
 | `server.js` | The whole server: the five checks, rate limit, cache and metrics |
+| `api/index.js`, `vercel.json` | Entry point and routing for Vercel |
 | `public/index.html` | The whole page, with inline CSS and JS |
 | `public/assets/` | Icons, artwork and fonts from the Figma design |
 | `data/disposable-domains.txt` | Throwaway domains, one per line |
@@ -92,3 +93,7 @@ The app must listen only on 127.0.0.1 behind Caddy, which the example settings d
 If port 25 can't be opened, set `SKIP_MAILBOX=1`. Checks 1 to 4 still run and the mailbox shows as Unknown.
 
 The rate limit, lookup cache and counts live in memory, so run one server process.
+
+### Vercel
+
+Pushing to the connected branch deploys the app with no extra settings. Vercel blocks outgoing port 25, so [api/index.js](api/index.js) turns the mailbox check off there. Checks 1 to 4 still run, and any address that passes them comes back Unknown. Vercel also runs several copies of the app, so the rate limit and `/healthz` counts apply per copy rather than to the whole site. Use a VPS for real mailbox results.
