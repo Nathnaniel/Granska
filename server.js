@@ -621,8 +621,8 @@ async function servePage(res) {
 }
 
 // Only plain file names in one folder, so a request can't climb out of it.
-const ASSET_PATTERN = /^\/assets\/([a-z0-9-]+\.(svg|woff2|otf))$/i;
-const ASSET_TYPES = { svg: 'image/svg+xml', woff2: 'font/woff2', otf: 'font/otf' };
+const ASSET_PATTERN = /^\/assets\/([a-z0-9-]+\.(svg|woff2))$/i;
+const ASSET_TYPES = { svg: 'image/svg+xml', woff2: 'font/woff2' };
 
 async function serveAsset(res, match) {
   const [, name, extension] = match;
