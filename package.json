@@ -1,0 +1,15 @@
+{
+  "name": "email-verifier",
+  "version": "0.1.0",
+  "private": true,
+  "description": "One page that tells anyone whether an email address is real. No login, no email sent.",
+  "main": "server.js",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test \"test/*.test.js\"",
+    "update-disposable": "node scripts/update-disposable.js",
+    "check-port25": "node scripts/check-port25.js"
+  }
+}

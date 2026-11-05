@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email Verifier</title>
+<meta name="description" content="Check whether an email address is real in a few seconds. No sign-up, and no email is sent.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23b0c26f'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style nonce="__NONCE__">
+/* Values come from the Figma file "Jummai", section 2642:7927. The verdict,
+   suggestion, failed and error states aren't in that file, so they reuse its
+   tokens. --risky and --invalid are the only colours added. */
+@font-face {
+  font-family: Switzer;
+  src: url("/assets/Switzer-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Clepso Mono";
+  src: url("/assets/ClepsoMono-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --ink: #171615;
+  --text-primary: #171717;
+  --text-soft: #666666;
+  --text-muted: #999999;
+  --text-faint: #cccccc;
+  --surface: #f8f8f8;
+  --button-idle: #f5f5f5;
+  --brand: #b0c26f;
+  --valid: #41b93c;
+  --risky: #b7791f;
+  --invalid: #e5484d;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  position: relative;
+  min-height: 100vh;
+  margin: 0;
+  background: #ffffff;
+  color: var(--ink);
+  font: 400 14px/18px Switzer, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+p, h1, ol { margin: 0; padding: 0; }
+
+/* Clipped here so the overhanging artwork can't widen the page. */
+.artwork-frame {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 353px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.artwork {
+  position: absolute;
+  top: -247px;
+  right: -150px;
+  width: 600px;
+  height: 600px;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 140px 16px 60px;
+}
+
+header { width: 267px; max-width: 100%; text-align: center; }
+h1 { font-size: 32px; font-weight: 700; line-height: 42px; white-space: nowrap; }
+.lede { margin: 10px auto 0; max-width: 257px; }
+
+/* Form */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 337px;
+  max-width: 100%;
+  margin-top: 48px;
+}
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+  line-height: 16px;
+}
+.field {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 42px;
+  padding: 0 13px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: var(--surface);
+}
+.field:has(input:focus) { border-color: var(--brand); }
+.field img { flex: none; }
+input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #000000;
+  font: 400 12px/14px Switzer, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+input::placeholder { color: var(--text-faint); opacity: 1; }
+
+#verify {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 40px;
+  background: var(--button-idle);
+  color: var(--text-muted);
+  cursor: pointer;
+  font: inherit;
+  line-height: 16px;
+}
+#verify .arrow-active, #verify .spinner { display: none; }
+form:has(input:focus) #verify,
+form:has(input:not(:placeholder-shown)) #verify {
+  background: var(--brand);
+  color: #ffffff;
+}
+form:has(input:focus) #verify .arrow-idle,
+form:has(input:not(:placeholder-shown)) #verify .arrow-idle { display: none; }
+form:has(input:focus) #verify .arrow-active,
+form:has(input:not(:placeholder-shown)) #verify .arrow-active { display: block; }
+#verify:disabled { cursor: progress; }
+#verify:disabled .arrow-active,
+#verify:disabled .arrow-idle { display: none !important; }
+#verify:disabled .spinner { display: block; }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+input:focus-visible { outline: 0; } /* The field's border shows focus. */
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid rgba(255, 255, 255, .45);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Verdict */
+#result { width: 337px; max-width: 100%; margin-top: 32px; }
+#result:empty { display: none; }
+.verdict-head { display: flex; align-items: center; gap: 8px; }
+.pill {
+  flex: none;
+  padding: 3px 10px;
+  border-radius: 40px;
+  background: color-mix(in srgb, currentColor 14%, transparent);
+  font-size: 12px;
+  font-weight: 500;
+}
+.pill.valid { color: var(--valid); }
+.pill.risky { color: var(--risky); }
+.pill.invalid { color: var(--invalid); }
+.pill.unknown { color: var(--text-soft); }
+.checked-address { min-width: 0; color: #000000; font-weight: 500; overflow-wrap: anywhere; }
+.reason { margin-top: 8px; color: var(--text-soft); }
+.suggestion {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.suggestion b { font-weight: 500; }
+.error { color: var(--invalid); }
+
+/* Checks */
+.route {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  width: 480px;
+  max-width: 100%;
+  margin-top: 80px;
+  list-style: none;
+  transform: translateX(11px);
+}
+#result:not(:empty) + .route { margin-top: 32px; }
+.route li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 40px;
+}
+.row-main { display: flex; align-items: center; gap: 20px; min-width: 0; }
+.route li.passed .row-main,
+.route li.failed .row-main,
+.route li.unknown .row-main { gap: 8px; }
+.row-main img { flex: none; }
+.row-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.check-name, .check-detail { padding: 0 4px; }
+.check-name { font-weight: 500; }
+.check-detail { overflow-wrap: anywhere; }
+.check-mark { flex: none; padding: 0 4px; font-size: 12px; line-height: 16px; }
+
+.route li.waiting * { color: var(--text-muted); }
+.route li.dim * { color: var(--text-faint); }
+.route li.current .check-name { color: #000000; }
+.route li.current .check-detail { color: var(--text-soft); }
+.route li.current .check-mark { color: var(--text-faint); }
+.route li.current img { animation: spin 1s steps(8) infinite; }
+.route li.passed .check-name, .route li.failed .check-name { color: #000000; }
+.route li.passed .check-detail, .route li.failed .check-detail { color: var(--text-soft); }
+.route li.passed .check-mark { color: var(--valid); }
+.route li.failed .check-mark { color: var(--invalid); }
+.route li.unknown * { color: var(--text-muted); }
+
+.fine-print {
+  width: 511px;
+  max-width: 100%;
+  margin-top: 62px;
+  color: #000000;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  transform: translateX(10px);
+}
+main:has(input:focus) .fine-print,
+main:has(input:not(:placeholder-shown)) .fine-print { color: var(--text-soft); }
+
+footer {
+  margin-top: 132px;
+  color: var(--ink);
+  font: 400 12px/14px "Clepso Mono", ui-monospace, Menlo, monospace;
+  white-space: pre;
+  transform: translateX(17px);
+}
+
+@media (max-width: 1240px) {
+  .artwork { top: -16vw; right: -10vw; width: 40vw; height: 40vw; }
+}
+@media (max-width: 560px) {
+  main { padding-top: 112px; }
+  .route, .fine-print, footer { transform: none; }
+  .route li { align-items: flex-start; }
+  .row-main { align-items: flex-start; gap: 12px; }
+  input { font-size: 16px; }
+  footer { margin-top: 64px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .route li.current img { animation: none; }
+  .spinner { animation-duration: 3s; }
+}
+</style>
+</head>
+<body>
+<div class="artwork-frame"><img class="artwork" src="/assets/asterisk.svg" width="600" height="600" alt=""></div>
+<main>
+  <header>
+    <h1>Is this email real?</h1>
+    <p class="lede">Find out in a few seconds. No sign-up, and nothing gets sent to the address</p>
+  </header>
+
+  <form id="form" novalidate>
+    <div>
+      <label for="email">Email</label>
+      <div class="field">
+        <img src="/assets/mail.svg" width="14" height="14" alt="">
+        <input id="email" name="email" type="email" inputmode="email" autocomplete="off"
+               autocapitalize="off" spellcheck="false" maxlength="320" placeholder="jummai@example.com">
+      </div>
+    </div>
+    <button id="verify" type="submit">
+      <img class="arrow-idle" src="/assets/arrow-idle.svg" width="16" height="16" alt="">
+      <img class="arrow-active" src="/assets/arrow-active.svg" width="16" height="16" alt="">
+      <span class="spinner"></span>
+      <span id="verify-label">Verify</span>
+    </button>
+  </form>
+
+  <section id="result" aria-live="polite" aria-atomic="true"></section>
+
+  <ol class="route" id="route" aria-label="The five checks"></ol>
+
+  <p class="fine-print">Gmail, Outlook, Yahoo and some other providers don’t always answer these checks honestly, so treat every result as a strong hint and not a guarantee. Addresses you check aren’t stored.</p>
+
+  <footer>©   2026   Build with ❤️ by nathaniel</footer>
+</main>
+
+<script nonce="__NONCE__">
+(() => {
+  const CHECKS = [
+    ['format', 'Format', 'Is it written like an email address?'],
+    ['disposable', 'Disposable', 'Is it from a throwaway email provider?'],
+    ['domain', 'Domain', 'Can the domain receive email?'],
+    ['inbox', 'Personal inbox', 'Is it a person or a shared team inbox?'],
+    ['mailbox', 'Mailbox', 'Would the mail server accept it?'],
+  ];
+  const STATUS_LABELS = { valid: 'Valid', risky: 'Risky', invalid: 'Invalid', unknown: 'Unknown' };
+  const MARKS = {
+    waiting: 'Waiting',
+    dim: 'Waiting',
+    current: 'Waiting..',
+    passed: 'Passed',
+    failed: 'Failed',
+    unknown: 'Couldn’t check',
+  };
+  const ICONS = {
+    waiting: ['loader-waiting', 24],
+    dim: ['loader-dim', 24],
+    current: ['loader-current', 24],
+    passed: ['check', 16],
+    failed: ['failed', 16],
+    unknown: ['remove', 16],
+  };
+  const STEP_MS = 400;
+
+  const form = document.getElementById('form');
+  const input = document.getElementById('email');
+  const button = document.getElementById('verify');
+  const buttonLabel = document.getElementById('verify-label');
+  const result = document.getElementById('result');
+  const route = document.getElementById('route');
+
+  // Page memory only, gone on reload. Lets the server count "ran a second check"
+  // without identifying anyone. Accepting a suggestion isn't counted as one.
+  let typedChecks = 0;
+  let busy = false;
+  let stepTimer = null;
+
+  const el = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  };
+
+  function icon(state) {
+    const [name, size] = ICONS[state];
+    const image = el('img');
+    image.src = `/assets/${name}.svg`;
+    image.width = size;
+    image.height = size;
+    image.alt = '';
+    return image;
+  }
+
+  // Pass checks for a finished result, or activeIndex while a check is running.
+  function renderRoute({ checks, activeIndex } = {}) {
+    route.replaceChildren(...CHECKS.map(([id, label, question], index) => {
+      const check = checks?.find((item) => item.id === id);
+      let state = 'waiting';
+      if (check) state = check.status;
+      else if (activeIndex !== undefined) state = index === activeIndex ? 'current' : 'dim';
+
+      const text = el('span', 'row-text');
+      text.append(el('span', 'check-name', label), el('span', 'check-detail', check ? check.detail : question));
+      const main = el('span', 'row-main');
+      main.append(icon(state), text);
+      const row = el('li', state);
+      row.append(main, el('span', 'check-mark', MARKS[state]));
+      return row;
+    }));
+  }
+
+  // The server answers once, at the end. This walks the rows while it works,
+  // then holds on the last one, which is the slow step.
+  function startSteps() {
+    let index = 0;
+    renderRoute({ activeIndex: index });
+    stepTimer = setInterval(() => {
+      if (index < CHECKS.length - 1) {
+        index += 1;
+        renderRoute({ activeIndex: index });
+      }
+    }, STEP_MS);
+  }
+
+  function setBusy(next) {
+    busy = next;
+    button.disabled = next;
+    buttonLabel.textContent = next ? 'Checking' : 'Verify';
+    if (next) {
+      result.replaceChildren();
+      startSteps();
+    } else {
+      clearInterval(stepTimer);
+    }
+  }
+
+  function showError(message) {
+    result.replaceChildren(el('p', 'error', message));
+    renderRoute();
+  }
+
+  function showResult(data) {
+    const head = el('div', 'verdict-head');
+    head.append(
+      el('span', `pill ${data.status}`, STATUS_LABELS[data.status]),
+      el('span', 'checked-address', data.email),
+    );
+    const parts = [head, el('p', 'reason', data.reason)];
+
+    if (data.suggestion) {
+      const fix = el('button', 'suggestion');
+      fix.type = 'button';
+      fix.append('Did you mean ', el('b', '', data.suggestion), '?');
+      fix.addEventListener('click', () => {
+        input.value = data.suggestion;
+        check(data.suggestion, 'suggestion');
+      });
+      parts.push(fix);
+    }
+
+    result.replaceChildren(...parts);
+    renderRoute({ checks: data.checks });
+  }
+
+  async function check(email, source) {
+    if (busy) return;
+    setBusy(true);
+    let outcome;
+    try {
+      const response = await fetch('/api/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source }),
+      });
+      const data = await response.json().catch(() => null);
+      outcome = response.ok && data
+        ? () => showResult(data)
+        : () => showError(data?.error || 'Something went wrong on our side. Try again.');
+    } catch {
+      outcome = () => showError('Can’t reach the server. Check your connection and try again.');
+    }
+    setBusy(false);
+    outcome();
+  }
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const email = input.value.trim();
+    if (!email) {
+      input.focus();
+      return;
+    }
+    if (busy) return;
+    typedChecks += 1;
+    const source = typedChecks === 1 ? 'first' : typedChecks === 2 ? 'repeat' : undefined;
+    check(email, source);
+  });
+
+  renderRoute();
+})();
+</script>
+</body>
+</html>
