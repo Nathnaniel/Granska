@@ -1,4 +1,4 @@
-# Email Verifier
+# Granska
 
 One page where anyone can check whether an email address is real. No login, and no email is ever sent. See [Email-Verifier-PRD.md](Email-Verifier-PRD.md) for the full spec.
 
@@ -61,29 +61,29 @@ The app needs a server that can open outgoing connections on port 25. Hosts chan
 2. **Install Node.js 20 or later and Caddy** on the server. Caddy provides HTTPS.
 3. **Copy the project over**, then test port 25 on the server:
    ```bash
-   rsync -av --exclude .git --exclude .claude ./ root@YOUR_SERVER:/opt/email-verifier/
+   rsync -av --exclude .git --exclude .claude ./ root@YOUR_SERVER:/opt/granska/
    ```
    ```bash
-   cd /opt/email-verifier && npm run check-port25
+   cd /opt/granska && npm run check-port25
    ```
    If it fails, ask the host to open port 25, or use another host. Describe the use honestly: the server talks to mail servers to check addresses and sends no mail.
 4. **Set reverse DNS** for the server's IP to your domain in the host's control panel. Then rerun the check with the name set:
    ```bash
-   cd /opt/email-verifier && HELO_HOST=verifier.example.com npm run check-port25
+   cd /opt/granska && HELO_HOST=granska.example.com npm run check-port25
    ```
-5. **Set up the service**, replacing `verifier.example.com` in both copied files:
+5. **Set up the service**, replacing `granska.example.com` in both copied files:
    ```bash
-   useradd --system --no-create-home emailverifier
-   cp /opt/email-verifier/deploy/email-verifier.env.example /etc/email-verifier.env
-   cp /opt/email-verifier/deploy/email-verifier.service /etc/systemd/system/
-   cp /opt/email-verifier/deploy/Caddyfile /etc/caddy/Caddyfile
+   useradd --system --no-create-home granska
+   cp /opt/granska/deploy/granska.env.example /etc/granska.env
+   cp /opt/granska/deploy/granska.service /etc/systemd/system/
+   cp /opt/granska/deploy/Caddyfile /etc/caddy/Caddyfile
    ```
    ```bash
-   systemctl daemon-reload && systemctl enable --now email-verifier && systemctl reload caddy
+   systemctl daemon-reload && systemctl enable --now granska && systemctl reload caddy
    ```
 6. **Refresh the throwaway list** on each deploy, then restart the service:
    ```bash
-   cd /opt/email-verifier && npm run update-disposable && systemctl restart email-verifier
+   cd /opt/granska && npm run update-disposable && systemctl restart granska
    ```
 7. **Open the page and check an address you own.** Reading `/healthz` shows the running counts.
 

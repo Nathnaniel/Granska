@@ -1,5 +1,5 @@
 'use strict';
-// Email Verifier: one Node.js server, no dependencies. See Email-Verifier-PRD.md.
+// Granska: one Node.js server, no dependencies. See Email-Verifier-PRD.md.
 // Privacy rule for this file: never log or store a checked address.
 
 const crypto = require('node:crypto');

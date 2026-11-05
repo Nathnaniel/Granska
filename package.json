@@ -1,5 +1,5 @@
 {
-  "name": "email-verifier",
+  "name": "granska",
   "version": "0.1.0",
   "private": true,
   "description": "One page that tells anyone whether an email address is real. No login, no email sent.",

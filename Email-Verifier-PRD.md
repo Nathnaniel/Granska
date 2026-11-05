@@ -1,10 +1,10 @@
-# Email Verifier — PRD
+# Granska — PRD
 
 Nov 5, 2026 · Nathaniel Tibitus
 
 ## Overview
 
-Email Verifier is a single web page where anyone types an email address and learns in a few seconds whether it is real, with no account, no sign-up and no email sent to the person.
+Granska is a single web page where anyone types an email address and learns in a few seconds whether it is real, with no account, no sign-up and no email sent to the person.
 
 **Problem.** Sending to fake, mistyped or throwaway addresses wastes money, hurts sender reputation and loses real customers to typos like `gmial.com`. Existing verification tools ask you to create an account, buy credits or upload a list before you can check a single address.
 
@@ -136,7 +136,8 @@ The biggest risk is the mailbox check: it depends on a host that allows port 25 
 
 **Open questions**
 
-- [ ] Product name and domain for the page
+- [x] Product name: Granska
+- [ ] Domain for the page
 - [ ] Which host to use, and whether it allows port 25
 - [ ] Stay fully API-free, or use a paid API for the mailbox step
 - [ ] Should a version 2 add bulk CSV checks, and would that need accounts?

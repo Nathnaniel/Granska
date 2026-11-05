@@ -1,5 +1,5 @@
 # Replace the name with your domain. Caddy gets the HTTPS certificate on its own.
-verifier.example.com {
+granska.example.com {
 	encode gzip
 	reverse_proxy 127.0.0.1:3000 {
 		flush_interval -1 # Send each check to the page as it finishes.
