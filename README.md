@@ -35,7 +35,7 @@ SKIP_MAILBOX=1 npm run dev
 | `deploy/` | Service, Caddy and settings files for a VPS |
 | `test/server.test.js` | Tests, including a fake mail server |
 
-`POST /api/verify` takes `{ "email": "..." }` and returns the verdict. `GET /healthz` returns anonymous counts, which is where the PRD's success metrics are read from. They reset when the server restarts.
+`POST /api/verify` takes `{ "email": "..." }` and returns the verdict. With `Accept: application/x-ndjson` it streams one JSON line per finished check, then the verdict, which is how the page shows its steps. `GET /healthz` returns anonymous counts, which is where the PRD's success metrics are read from. They reset when the server restarts.
 
 The mailbox check stops at `RCPT TO` and quits, so `DATA` is never sent.
 

@@ -508,13 +508,14 @@ describe('HTTP', () => {
   before(async () => {
     console.log = (line) => logged.push(String(line));
     server = createApp({
-      verify: (email) => verifyEmail(email, {
+      verify: (email, extra) => verifyEmail(email, {
+        ...extra,
         disposable: new Set(),
         lookup: async () => ({ status: 'ok', hosts: ['mx.test'] }),
         mailbox: async () => 'accepted',
         skipMailbox: false,
       }),
-      limiter: createRateLimiter({ limit: 6 }),
+      limiter: createRateLimiter({ limit: 12 }),
     });
     await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
     base = `http://127.0.0.1:${server.address().port}`;
@@ -585,9 +586,59 @@ describe('HTTP', () => {
     assert.equal((await fetch(`${base}/data/disposable-domains.txt`)).status, 404);
   });
 
+  const postStream = async (email) => {
+    const res = await fetch(`${base}/api/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/x-ndjson' },
+      body: JSON.stringify({ email }),
+    });
+    const text = await res.text();
+    return { res, events: text.trim().split('\n').map((line) => JSON.parse(line)) };
+  };
+
+  test('streams each check in order, then the verdict', async () => {
+    const { res, events } = await postStream('jo@example.com');
+    assert.match(res.headers.get('content-type'), /application\/x-ndjson/);
+    assert.deepEqual(events.slice(0, 5).map((e) => e.check.id), ['format', 'disposable', 'domain', 'inbox', 'mailbox']);
+    assert.ok(events.slice(0, 5).every((e) => e.type === 'check'));
+    assert.equal(events[5].type, 'result');
+    assert.equal(events[5].status, 'valid');
+    assert.equal(events[5].checks.length, 5);
+  });
+
+  test('stops streaming checks when one settles the answer', async () => {
+    const { events } = await postStream('nope');
+    assert.deepEqual(events.map((e) => e.type), ['check', 'result']);
+    assert.equal(events[0].check.status, 'failed');
+    assert.equal(events[1].status, 'invalid');
+  });
+
+  test('still answers with plain JSON without the stream header', async () => {
+    const res = await post({ email: 'jo@example.com' });
+    assert.match(res.headers.get('content-type'), /application\/json/);
+    assert.equal((await res.json()).status, 'valid');
+  });
+
+  test('reports a failure partway through the stream', async () => {
+    const quiet = console.error;
+    console.error = () => {};
+    const broken = createApp({ verify: async (email, { onCheck }) => { onCheck({ id: 'format' }); throw new Error('boom'); } });
+    await new Promise((resolve) => broken.listen(0, '127.0.0.1', resolve));
+    const res = await fetch(`http://127.0.0.1:${broken.address().port}/api/verify`, {
+      method: 'POST',
+      headers: { Accept: 'application/x-ndjson' },
+      body: JSON.stringify({ email: 'jo@example.com' }),
+    });
+    const lines = (await res.text()).trim().split('\n').map((line) => JSON.parse(line));
+    await new Promise((resolve) => broken.close(resolve));
+    console.error = quiet;
+    assert.deepEqual(lines.map((e) => e.type), ['check', 'error']);
+    assert.ok(!JSON.stringify(lines).includes('boom'));
+  });
+
   test('shows the PRD message past the limit', async () => {
     let res;
-    for (let i = 0; i < 7; i += 1) res = await post({ email: 'a@example.com' });
+    for (let i = 0; i < 13; i += 1) res = await post({ email: 'a@example.com' });
     const data = await res.json();
     assert.equal(res.status, 429);
     assert.equal(data.error, 'Too many checks. Wait a minute and try again.');

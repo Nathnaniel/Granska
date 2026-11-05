@@ -417,12 +417,16 @@ async function verifyEmail(input, deps = {}) {
     lookup = defaultLookup,
     mailbox = checkMailbox,
     skipMailbox = config.skipMailbox,
+    onCheck = () => {},
   } = deps;
 
   const checks = CHECKS.map(([id, label]) => ({
     id, label, status: 'unknown', detail: 'Not run, an earlier check settled the answer.',
   }));
-  const mark = (id, status, detail) => Object.assign(checks.find((c) => c.id === id), { status, detail });
+  const mark = (id, status, detail) => {
+    const check = Object.assign(checks.find((c) => c.id === id), { status, detail });
+    onCheck({ ...check });
+  };
 
   const parsed = parseEmail(input);
   const suggestion = suggestAddress(input);
@@ -562,6 +566,8 @@ function createMetrics() {
 // ---------------------------------------------------------------- HTTP
 
 const SOURCES = new Set(['first', 'repeat', 'suggestion']);
+const STREAM_TYPE = 'application/x-ndjson';
+const SERVER_ERROR_MESSAGE = 'Something went wrong on our side. Try again.';
 
 function sendJson(res, status, body, headers = {}) {
   res.writeHead(status, {
@@ -671,12 +677,35 @@ function createApp(deps = {}) {
     }
 
     const started = Date.now();
-    const result = await verify(email);
-    const durationMs = Date.now() - started;
     const source = SOURCES.has(body.source) ? body.source : null;
-    metrics.record(result, source, durationMs);
-    console.log(JSON.stringify({ event: 'check', status: result.status, durationMs, source }));
-    sendJson(res, 200, { ...result, durationMs });
+    const finish = (result) => {
+      const durationMs = Date.now() - started;
+      metrics.record(result, source, durationMs);
+      console.log(JSON.stringify({ event: 'check', status: result.status, durationMs, source }));
+      return { ...result, durationMs };
+    };
+
+    if (!String(req.headers.accept).includes(STREAM_TYPE)) {
+      sendJson(res, 200, finish(await verify(email)));
+      return;
+    }
+
+    // One JSON object per line: each check as it finishes, then the verdict.
+    res.writeHead(200, {
+      'Content-Type': `${STREAM_TYPE}; charset=utf-8`,
+      'Cache-Control': 'no-store',
+      'X-Content-Type-Options': 'nosniff',
+    });
+    const send = (event) => res.write(`${JSON.stringify(event)}\n`);
+    try {
+      const result = await verify(email, { onCheck: (check) => send({ type: 'check', check }) });
+      send({ type: 'result', ...finish(result) });
+    } catch (err) {
+      metrics.counts.serverErrors += 1;
+      console.error(JSON.stringify({ event: 'server_error', message: err.message }));
+      send({ type: 'error', error: SERVER_ERROR_MESSAGE });
+    }
+    res.end();
   }
 
   return http.createServer(async (req, res) => {
@@ -697,7 +726,7 @@ function createApp(deps = {}) {
     } catch (err) {
       metrics.counts.serverErrors += 1;
       console.error(JSON.stringify({ event: 'server_error', message: err.message }));
-      if (!res.headersSent) sendJson(res, 500, { error: 'Something went wrong on our side. Try again.' });
+      if (!res.headersSent) sendJson(res, 500, { error: SERVER_ERROR_MESSAGE });
       else res.destroy();
     }
   });

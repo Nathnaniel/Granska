@@ -36,13 +36,14 @@
   --valid: #41b93c;
   --risky: #b7791f;
   --invalid: #e5484d;
+  /* 600px at the 1440px Figma frame, shrinking smoothly on narrower screens. */
+  --art: min(600px, 41.667vw);
 }
 
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   position: relative;
-  min-height: 100vh;
   margin: 0;
   background: #ffffff;
   color: var(--ink);
@@ -56,16 +57,16 @@ p, h1, ol { margin: 0; padding: 0; }
 .artwork-frame {
   position: absolute;
   inset: 0 0 auto;
-  height: 353px;
+  height: calc(var(--art) * .5883);
   overflow: hidden;
   pointer-events: none;
 }
 .artwork {
   position: absolute;
-  top: -247px;
-  right: -150px;
-  width: 600px;
-  height: 600px;
+  top: calc(var(--art) * -.4117);
+  right: calc(var(--art) * -.25);
+  width: var(--art);
+  height: var(--art);
 }
 
 main {
@@ -74,11 +75,11 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 140px 16px 60px;
+  padding: 140px 16px 24px;
 }
 
 header { width: 267px; max-width: 100%; text-align: center; }
-h1 { font-size: 32px; font-weight: 700; line-height: 42px; white-space: nowrap; }
+h1 { font-size: clamp(24px, 10vw, 32px); font-weight: 700; line-height: 1.3125; white-space: nowrap; }
 .lede { margin: 10px auto 0; max-width: 257px; }
 
 /* Form */
@@ -107,6 +108,7 @@ label {
   background: var(--surface);
 }
 .field:has(input:focus) { border-color: var(--brand); }
+.field:has(input[aria-invalid="true"]) { border-color: var(--invalid); }
 .field img { flex: none; }
 input {
   flex: 1;
@@ -120,6 +122,8 @@ input {
   font: 400 12px/14px Switzer, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 input::placeholder { color: var(--text-faint); opacity: 1; }
+.field-error { margin-top: 6px; color: var(--invalid); font-size: 12px; line-height: 16px; }
+.field-error:empty { display: none; }
 
 #verify {
   display: flex;
@@ -133,19 +137,18 @@ input::placeholder { color: var(--text-faint); opacity: 1; }
   border-radius: 40px;
   background: var(--button-idle);
   color: var(--text-muted);
-  cursor: pointer;
+  cursor: default;
   font: inherit;
   line-height: 16px;
 }
 #verify .arrow-active, #verify .spinner { display: none; }
-form:has(input:focus) #verify,
+/* Inactive until the visitor has typed something. */
 form:has(input:not(:placeholder-shown)) #verify {
   background: var(--brand);
   color: #ffffff;
+  cursor: pointer;
 }
-form:has(input:focus) #verify .arrow-idle,
 form:has(input:not(:placeholder-shown)) #verify .arrow-idle { display: none; }
-form:has(input:focus) #verify .arrow-active,
 form:has(input:not(:placeholder-shown)) #verify .arrow-active { display: block; }
 #verify:disabled { cursor: progress; }
 #verify:disabled .arrow-active,
@@ -167,7 +170,7 @@ input:focus-visible { outline: 0; } /* The field's border shows focus. */
 /* Verdict */
 #result { width: 337px; max-width: 100%; margin-top: 32px; }
 #result:empty { display: none; }
-.verdict-head { display: flex; align-items: center; gap: 8px; }
+.verdict-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .pill {
   flex: none;
   padding: 3px 10px;
@@ -218,11 +221,11 @@ input:focus-visible { outline: 0; } /* The field's border shows focus. */
   gap: 16px;
   min-height: 40px;
 }
-.row-main { display: flex; align-items: center; gap: 20px; min-width: 0; }
-.route li.passed .row-main,
-.route li.failed .row-main,
-.route li.unknown .row-main { gap: 8px; }
+.row-main { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .row-main img { flex: none; }
+/* Loaders are 24px and result icons 16px. Both sit in a 16px slot on one centre
+   line, so a row's text stays put when its loader turns into a result. */
+.route li.waiting img, .route li.dim img, .route li.current img { margin: 0 -4px; }
 .row-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .check-name, .check-detail { padding: 0 4px; }
 .check-name { font-weight: 500; }
@@ -255,24 +258,48 @@ main:has(input:focus) .fine-print,
 main:has(input:not(:placeholder-shown)) .fine-print { color: var(--text-soft); }
 
 footer {
-  margin-top: 132px;
+  margin-top: 32px;
   color: var(--ink);
   font: 400 12px/14px "Clepso Mono", ui-monospace, Menlo, monospace;
-  white-space: pre;
+  max-width: 100%;
+  text-align: center;
+  white-space: pre-wrap;
   transform: translateX(17px);
 }
 
-@media (max-width: 1240px) {
-  .artwork { top: -16vw; right: -10vw; width: 40vw; height: 40vw; }
-}
+/* Phones */
 @media (max-width: 560px) {
-  main { padding-top: 112px; }
+  main { padding-top: 96px; }
+  form { width: 313px; }
+  #result { width: 100%; }
   .route, .fine-print, footer { transform: none; }
   .route li { align-items: flex-start; }
-  .row-main { align-items: flex-start; gap: 12px; }
-  input { font-size: 16px; }
-  footer { margin-top: 64px; }
+  .row-main { align-items: flex-start; }
+  .route li.waiting img, .route li.dim img, .route li.current img { margin: -3px -4px; }
 }
+/* Very narrow phones: the status drops under the text so the text keeps its width. */
+@media (max-width: 340px) {
+  .route li { flex-direction: column; gap: 4px; }
+  .check-mark { padding-left: 28px; }
+}
+/* Phones in landscape and other short screens: keep the form above the fold. */
+@media (max-height: 500px) {
+  main { padding-top: 48px; }
+  form { margin-top: 24px; }
+  .route { margin-top: 40px; }
+  .fine-print { margin-top: 40px; }
+  footer { margin-top: 24px; }
+}
+/* Touch screens of any size: tap-sized controls, and 16px text so iOS doesn't zoom. */
+@media (pointer: coarse) {
+  .field { height: 44px; }
+  #verify { height: 44px; }
+  .suggestion { min-height: 44px; }
+  input { font-size: 16px; }
+}
+/* Large monitors: scale up so the page doesn't sit tiny in the corner of the screen. */
+@media (min-width: 2200px) { html { zoom: 1.25; } }
+@media (min-width: 3200px) { html { zoom: 1.75; } }
 @media (prefers-reduced-motion: reduce) {
   .route li.current img { animation: none; }
   .spinner { animation-duration: 3s; }
@@ -293,8 +320,10 @@ footer {
       <div class="field">
         <img src="/assets/mail.svg" width="14" height="14" alt="">
         <input id="email" name="email" type="email" inputmode="email" autocomplete="off"
-               autocapitalize="off" spellcheck="false" maxlength="320" placeholder="jummai@example.com">
+               autocapitalize="off" spellcheck="false" maxlength="320" placeholder="jummai@example.com"
+               aria-describedby="email-error">
       </div>
+      <p class="field-error" id="email-error" role="alert"></p>
     </div>
     <button id="verify" type="submit">
       <img class="arrow-idle" src="/assets/arrow-idle.svg" width="16" height="16" alt="">
@@ -310,7 +339,7 @@ footer {
 
   <p class="fine-print">Gmail, Outlook, Yahoo and some other providers don’t always answer these checks honestly, so treat every result as a strong hint and not a guarantee. Addresses you check aren’t stored.</p>
 
-  <footer>©   2026   Build with ❤️ by nathaniel</footer>
+  <footer>©2026 Build with ❤️ by nathaniel</footer>
 </main>
 
 <script nonce="__NONCE__">
@@ -339,7 +368,9 @@ footer {
     failed: ['failed', 16],
     unknown: ['remove', 16],
   };
-  const STEP_MS = 400;
+  const GENERIC_ERROR = 'Something went wrong on our side. Try again.';
+  const STEP_MS = 350; // The first checks take milliseconds, so hold each one long enough to read.
+  const REQUEST_TIMEOUT_MS = 20000; // Longer than the server's slowest possible check.
 
   const form = document.getElementById('form');
   const input = document.getElementById('email');
@@ -347,12 +378,12 @@ footer {
   const buttonLabel = document.getElementById('verify-label');
   const result = document.getElementById('result');
   const route = document.getElementById('route');
+  const fieldError = document.getElementById('email-error');
 
   // Page memory only, gone on reload. Lets the server count "ran a second check"
   // without identifying anyone. Accepting a suggestion isn't counted as one.
   let typedChecks = 0;
   let busy = false;
-  let stepTimer = null;
 
   const el = (tag, className, text) => {
     const node = document.createElement(tag);
@@ -389,29 +420,21 @@ footer {
     }));
   }
 
-  // The server answers once, at the end. This walks the rows while it works,
-  // then holds on the last one, which is the slow step.
-  function startSteps() {
-    let index = 0;
-    renderRoute({ activeIndex: index });
-    stepTimer = setInterval(() => {
-      if (index < CHECKS.length - 1) {
-        index += 1;
-        renderRoute({ activeIndex: index });
-      }
-    }, STEP_MS);
-  }
-
   function setBusy(next) {
     busy = next;
     button.disabled = next;
     buttonLabel.textContent = next ? 'Checking' : 'Verify';
     if (next) {
       result.replaceChildren();
-      startSteps();
-    } else {
-      clearInterval(stepTimer);
+      renderRoute({ activeIndex: 0 });
     }
+  }
+
+  // Problems with what was typed appear under the input and clear on the next edit.
+  function setFieldError(message) {
+    fieldError.textContent = message;
+    if (message) input.setAttribute('aria-invalid', 'true');
+    else input.removeAttribute('aria-invalid');
   }
 
   function showError(message) {
@@ -425,7 +448,10 @@ footer {
       el('span', `pill ${data.status}`, STATUS_LABELS[data.status]),
       el('span', 'checked-address', data.email),
     );
-    const parts = [head, el('p', 'reason', data.reason)];
+    // A bad format is shown under the input, so the reason isn't repeated here.
+    const badFormat = data.checks.find((item) => item.id === 'format')?.status === 'failed';
+    setFieldError(badFormat ? data.reason : '');
+    const parts = badFormat ? [head] : [head, el('p', 'reason', data.reason)];
 
     if (data.suggestion) {
       const fix = el('button', 'suggestion');
@@ -442,22 +468,63 @@ footer {
     renderRoute({ checks: data.checks });
   }
 
+  // Yields each JSON line of the server's response as it arrives.
+  async function* readEvents(response) {
+    const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+    let buffer = '';
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) return;
+      buffer += value;
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (const line of lines) if (line) yield JSON.parse(line);
+    }
+  }
+
+  // Ticks off each check as the server finishes it, then moves to the next row.
+  // Returns what to show once the check is over.
+  async function playChecks(response) {
+    const shown = [];
+    let lastStep = Date.now();
+    const holdStep = async () => {
+      const wait = STEP_MS - (Date.now() - lastStep);
+      if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
+      lastStep = Date.now();
+    };
+
+    for await (const event of readEvents(response)) {
+      if (event.type === 'error') return () => showError(event.error);
+      await holdStep();
+      if (event.type === 'result') return () => showResult(event);
+      shown.push(event.check);
+      renderRoute({ checks: shown, activeIndex: shown.length });
+    }
+    return () => showError(GENERIC_ERROR);
+  }
+
   async function check(email, source) {
     if (busy) return;
+    setFieldError('');
     setBusy(true);
     let outcome;
     try {
       const response = await fetch('/api/verify', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/x-ndjson' },
         body: JSON.stringify({ email, source }),
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       });
-      const data = await response.json().catch(() => null);
-      outcome = response.ok && data
-        ? () => showResult(data)
-        : () => showError(data?.error || 'Something went wrong on our side. Try again.');
-    } catch {
-      outcome = () => showError('Can’t reach the server. Check your connection and try again.');
+      if (response.ok) {
+        outcome = await playChecks(response);
+      } else {
+        const data = await response.json().catch(() => null);
+        outcome = () => showError(data?.error || GENERIC_ERROR);
+      }
+    } catch (err) {
+      outcome = () => showError(err.name === 'TimeoutError'
+        ? 'This check took too long. Try again.'
+        : 'Can’t reach the server. Check your connection and try again.');
     }
     setBusy(false);
     outcome();
@@ -467,6 +534,7 @@ footer {
     event.preventDefault();
     const email = input.value.trim();
     if (!email) {
+      setFieldError('Enter an email address.');
       input.focus();
       return;
     }
@@ -475,6 +543,8 @@ footer {
     const source = typedChecks === 1 ? 'first' : typedChecks === 2 ? 'repeat' : undefined;
     check(email, source);
   });
+
+  input.addEventListener('input', () => setFieldError(''));
 
   renderRoute();
 })();
