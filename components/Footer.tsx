@@ -8,8 +8,6 @@ export function Footer() {
   const t = useT();
   const locale = useLocale();
   const links = [
-    { href: `/${locale}#features`, label: t('nav.features') },
-    { href: `/${locale}#pricing`, label: t('nav.pricing') },
     { href: `/${locale}/docs`, label: t('footer.docs') },
     { href: `/${locale}/privacy`, label: t('footer.privacy') },
     { href: `/${locale}/terms`, label: t('footer.terms') },

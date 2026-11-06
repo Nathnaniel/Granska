@@ -12,9 +12,9 @@ export function SmoothScroll() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const lenis = new Lenis({
-      lerp: 0.055,
-      wheelMultiplier: 0.8,
-      anchors: { duration: 1.8 },
+      lerp: 0.04,
+      wheelMultiplier: 0.65,
+      anchors: { duration: 2.4, easing: (t) => 1 - (1 - t) ** 4 },
       stopInertiaOnNavigate: true,
     });
     const tick = (time: number) => lenis.raf(time * 1000);

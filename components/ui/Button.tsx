@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import { PageLink } from './PageLink';
 
 type Variant = 'primary' | 'secondary' | 'dark';
 
@@ -15,6 +15,6 @@ interface Common { variant?: Variant; className?: string; children: ReactNode }
 export function Button({ variant = 'primary', className = '', children, href, ...rest }:
   Common & { href?: string } & ButtonHTMLAttributes<HTMLButtonElement>) {
   const classes = `${BASE} ${VARIANTS[variant]} ${className}`;
-  if (href) return <Link href={href} className={classes} onClick={rest.onClick as never}>{children}</Link>;
+  if (href) return <PageLink href={href} className={classes} onClick={rest.onClick as never}>{children}</PageLink>;
   return <button type="button" className={classes} {...rest}>{children}</button>;
 }

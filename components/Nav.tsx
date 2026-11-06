@@ -9,6 +9,7 @@ import { LanguageSwitcher } from './LanguageSwitcher';
 import { Button } from './ui/Button';
 import { CrossIcon, MenuIcon } from './ui/icons';
 import { Logo } from './ui/Logo';
+import { PageLink } from './ui/PageLink';
 
 export function Nav({ account = false }: { account?: boolean }) {
   const t = useT();
@@ -44,7 +45,7 @@ export function Nav({ account = false }: { account?: boolean }) {
         <Link href={`/${locale}`} aria-label="Granska"><Logo /></Link>
         <nav aria-label={t('nav.main')} className="hidden items-center gap-6 lg:flex">
           {links.map((link) => (
-            <Link key={link.href} href={link.href} className="font-display text-sm text-soft transition-colors hover:text-text">{link.label}</Link>
+            <PageLink key={link.href} href={link.href} className="font-display text-sm text-soft transition-colors hover:text-text">{link.label}</PageLink>
           ))}
         </nav>
         <div className="flex items-center gap-2 lg:gap-3">
@@ -68,7 +69,7 @@ export function Nav({ account = false }: { account?: boolean }) {
           </div>
           <nav aria-label={t('nav.main')} className="mt-4 flex flex-col">
             {links.map((link) => (
-              <Link key={link.href} href={link.href} onClick={close} className="border-b border-line py-4 text-lg text-text">{link.label}</Link>
+              <PageLink key={link.href} href={link.href} onClick={close} className="border-b border-line py-4 text-lg text-text">{link.label}</PageLink>
             ))}
           </nav>
           <div className="mt-auto grid gap-3 pt-6">
