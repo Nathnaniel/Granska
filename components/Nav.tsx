@@ -39,7 +39,7 @@ export function Nav({ account = false }: { account?: boolean }) {
   const logOut = () => { close(); auth.signOut(); router.push(`/${locale}`); };
 
   return (
-    <header className={`sticky top-0 z-40 border-b transition-colors duration-200 ${scrolled ? 'border-line bg-white' : 'border-transparent'}`}>
+    <header className={`sticky top-0 z-40 transition-colors duration-200 ${scrolled ? 'bg-white/60 backdrop-blur-md' : ''}`}>
       <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-3 focus:py-2 focus:text-sm">{t('nav.skip')}</a>
       <div className="mx-auto flex h-20 max-w-[1080px] items-center justify-between gap-4 px-6">
         <Link href={`/${locale}`} aria-label="Granska"><Logo /></Link>
