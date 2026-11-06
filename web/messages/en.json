@@ -1,0 +1,266 @@
+{
+  "meta": {
+    "title": "Granska: know an email is real before you send",
+    "description": "Check any email address in seconds. Granska looks at format, domain and mailbox so your emails reach real people.",
+    "getStarted": "Get started with Granska",
+    "dashboard": "Your dashboard | Granska",
+    "docs": "API docs | Granska",
+    "privacy": "Privacy | Granska",
+    "terms": "Terms | Granska"
+  },
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "useCases": "Use cases",
+    "pricing": "Pricing",
+    "logIn": "Log in",
+    "getStarted": "Get started",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "language": "Language",
+    "skip": "Skip to content",
+    "main": "Main"
+  },
+  "status": {
+    "valid": "Valid",
+    "risky": "Risky",
+    "invalid": "Invalid",
+    "unknown": "Unknown"
+  },
+  "checker": {
+    "verify": "Verify",
+    "checking": "Checking…",
+    "demoNote": "Demo mode: these results are simulated. Try gmial.com or mailinator.com.",
+    "didYouMean": "Did you mean {address}?",
+    "errorEmpty": "Enter an email address to check.",
+    "errorInvalid": "That doesn’t look like an email address. Check it and try again.",
+    "passed": "Passed",
+    "failed": "Failed",
+    "skipped": "Not run",
+    "waiting": "Waiting",
+    "couldntCheck": "Couldn’t check",
+    "notRun": "Not run, an earlier check settled the answer.",
+    "noAnswer": "Couldn’t reach the mail server.",
+    "honest": "Gmail, Outlook, Yahoo and some other providers don’t always answer these checks honestly, so treat every result as a strong hint and not a guarantee. Addresses you check aren’t stored."
+  },
+  "checks": {
+    "format": "Format",
+    "disposable": "Disposable",
+    "domain": "Domain",
+    "inbox": "Personal inbox",
+    "mailbox": "Mailbox"
+  },
+  "reasons": {
+    "valid": "This mailbox exists and accepts mail.",
+    "format": "This address isn’t written correctly, so it can’t receive mail.",
+    "disposable": "This is a throwaway inbox, so it may stop working soon.",
+    "typo": "This domain looks like a typo and can’t receive mail.",
+    "shared": "This is a shared team inbox, so it may not reach one person.",
+    "mailbox": "The domain is real, but this mailbox doesn’t exist.",
+    "unknown": "The domain is real, but its mail server didn’t answer."
+  },
+  "hero": {
+    "title": "Know an email is real before you hit send.",
+    "sub": "Granska checks any address in seconds — format, domain and mailbox — so your emails reach real people.",
+    "tryFree": "Try a free check"
+  },
+  "more": {
+    "items": {
+      "format": "Is it written like a real address?",
+      "disposable": "Is it from a throwaway provider?",
+      "domain": "Can the domain receive email?",
+      "inbox": "Is it a person or a shared team inbox?",
+      "mailbox": "Would the mail server accept it?"
+    }
+  },
+  "features": {
+    "title": "Everything you need to trust a list.",
+    "sub": "Start with one address. Move up to full lists and your own app when you’re ready.",
+    "typo": {
+      "title": "Typo fixes",
+      "body": "“Did you mean…?” corrects common mistakes in one tap."
+    },
+    "disposable": {
+      "title": "Disposable detection",
+      "body": "Throwaway inboxes are flagged before they reach your list."
+    },
+    "bulk": {
+      "title": "Bulk list cleaning",
+      "body": "Upload a CSV and download only the valid addresses.",
+      "valid": "2186 valid",
+      "checked": "2400 checked"
+    },
+    "score": {
+      "title": "Deliverability score",
+      "body": "A score from 0 to 100 shows how likely mail is to land.",
+      "label": "Likely to deliver"
+    },
+    "api": {
+      "title": "Developer API",
+      "body": "Check addresses from your own product with one request."
+    },
+    "privacy": {
+      "title": "Privacy first",
+      "body": "We never email the address and never store it.",
+      "sent": "Emails sent",
+      "stored": "Addresses stored"
+    }
+  },
+  "useCases": {
+    "title": "Here’s how teams use Granska.",
+    "signups": {
+      "title": "Signups",
+      "body": "Block fake accounts at your form.",
+      "field": "Work email",
+      "ok": "Valid ✓",
+      "button": "Create account"
+    },
+    "sales": {
+      "title": "Sales outreach",
+      "body": "Check a lead before a cold email.",
+      "to": "To",
+      "subject": "Quick question about your Q3 launch",
+      "line": "Hi Maria, I saw your team is hiring…",
+      "note": "Checked 2 seconds ago"
+    },
+    "marketing": {
+      "title": "Email marketing",
+      "body": "Clean a list before a campaign."
+    },
+    "invoices": {
+      "title": "Invoices & orders",
+      "body": "Make sure receipts reach the customer.",
+      "invoice": "Invoice #1042",
+      "amount": "$480.00",
+      "send": "Receipt ready to send"
+    }
+  },
+  "pricing": {
+    "title": "Simple pricing.",
+    "sub": "Check single addresses for free. Pay when you need lists or the API.",
+    "billing": "Billing period",
+    "monthly": "Monthly",
+    "annually": "Annually",
+    "save": "Save 20%",
+    "perMonth": "/mo",
+    "billedAnnually": "Billed annually",
+    "popular": "Most popular",
+    "free": {
+      "name": "Free",
+      "cta": "Start checking",
+      "items": [
+        "10 checks per day",
+        "Single checks",
+        "Typo fixes",
+        "No login needed"
+      ]
+    },
+    "starter": {
+      "name": "Starter",
+      "cta": "Get started",
+      "items": [
+        "2,000 checks per month",
+        "CSV upload & download",
+        "Deliverability score",
+        "Check history",
+        "Email support"
+      ]
+    },
+    "pro": {
+      "name": "Pro",
+      "cta": "Get Pro",
+      "items": [
+        "15,000 checks per month",
+        "Everything in Starter",
+        "Developer API",
+        "Team members",
+        "Priority speed"
+      ]
+    },
+    "note1": "Need more? Pay as you go with credits that never expire.",
+    "note2": "Cancel anytime. No contracts."
+  },
+  "faq": {
+    "title": "Questions, answered.",
+    "items": [
+      {
+        "q": "Is the free check really free?",
+        "a": "Yes. You get 10 checks a day with no login and no card."
+      },
+      {
+        "q": "Do you email the person?",
+        "a": "No. Granska asks the mail server if it would accept the address, then disconnects before anything is sent."
+      },
+      {
+        "q": "How accurate is it?",
+        "a": "Most checks give a clear answer, but some mail servers refuse to say or accept every address. When that happens we show Risky or Unknown instead of guessing."
+      },
+      {
+        "q": "What does “Risky” mean?",
+        "a": "The address will probably receive mail, but there’s a catch: it could be a throwaway inbox, a shared team inbox, or a server that accepts everything."
+      },
+      {
+        "q": "Can I use it in my app?",
+        "a": "Yes. The Pro plan includes a Developer API for checking addresses from your forms and tools."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Start sending to real people.",
+    "small": "10 free checks a day. No card needed."
+  },
+  "footer": {
+    "docs": "API docs",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "copyright": "©  2026   Build by tibitus"
+  },
+  "auth": {
+    "createTab": "Create account",
+    "loginTab": "Log in",
+    "tabs": "Create an account or log in",
+    "google": "Continue with Google",
+    "or": "or",
+    "emailLabel": "Email",
+    "emailPlaceholder": "jummai@example.com",
+    "continueEmail": "Continue with email",
+    "sending": "Sending…",
+    "planPill": "{plan} plan · {price}",
+    "change": "Change",
+    "checkInbox": "Check your inbox",
+    "sent": "We sent a sign-in link to {email}",
+    "resend": "Resend link",
+    "resendIn": "Resend link in {seconds}s",
+    "resent": "We sent a new link.",
+    "differentEmail": "Use a different email",
+    "demoOpen": "Demo: open the sign-in link",
+    "errorEmpty": "Enter your email address.",
+    "errorInvalid": "That doesn’t look like an email address. Check it and try again.",
+    "errorExpired": "That sign-in link has expired. Enter your email and we’ll send a new one.",
+    "errorGeneric": "Something went wrong. Please try again."
+  },
+  "dashboard": {
+    "greeting": "Hi, {name}",
+    "sub": "Here’s where your account stands today.",
+    "creditsValue": "{count} of {total} checks today",
+    "uploadNote": "{file} selected. List checks aren’t available in this demo yet.",
+    "signOut": "Log out",
+    "inputTab": "Input",
+    "uploadTab": "Upload CSV",
+    "modes": "Choose how to check",
+    "dropPrefix": "Drag and drop or",
+    "dropBrowse": "click to browse",
+    "dropHint": "CSV, TSV or TXT · up to 20 MB",
+    "dropHintLong": "CSV, TSV or TXT · up to 20 MB and 100,000 rows · first row is the header",
+    "fileProgress": "{type} / {done} of {total}",
+    "errorType": "Choose a CSV, TSV or TXT file.",
+    "errorSize": "That file is over 20 MB. Choose a smaller one."
+  },
+  "soon": {
+    "docs": "API docs",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "body": "This page is coming soon.",
+    "back": "Back to home"
+  }
+}

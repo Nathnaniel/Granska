@@ -1,0 +1,266 @@
+{
+  "meta": {
+    "title": "Granska : vérifiez qu’un e-mail est réel avant d’envoyer",
+    "description": "Vérifiez n’importe quelle adresse e-mail en quelques secondes. Granska contrôle le format, le domaine et la boîte aux lettres pour que vos e-mails touchent de vraies personnes.",
+    "getStarted": "Commencer avec Granska",
+    "dashboard": "Votre tableau de bord | Granska",
+    "docs": "Documentation de l’API | Granska",
+    "privacy": "Confidentialité | Granska",
+    "terms": "Conditions | Granska"
+  },
+  "nav": {
+    "home": "Accueil",
+    "features": "Fonctionnalités",
+    "useCases": "Cas d’usage",
+    "pricing": "Tarifs",
+    "logIn": "Se connecter",
+    "getStarted": "Commencer",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "language": "Langue",
+    "skip": "Aller au contenu",
+    "main": "Principale"
+  },
+  "status": {
+    "valid": "Valide",
+    "risky": "Risqué",
+    "invalid": "Invalide",
+    "unknown": "Inconnu"
+  },
+  "checker": {
+    "verify": "Vérifier",
+    "checking": "Vérification…",
+    "demoNote": "Mode démo : ces résultats sont simulés. Essayez gmial.com ou mailinator.com.",
+    "didYouMean": "Vouliez-vous dire {address} ?",
+    "errorEmpty": "Saisissez une adresse e-mail à vérifier.",
+    "errorInvalid": "Cela ne ressemble pas à une adresse e-mail. Vérifiez-la et réessayez.",
+    "passed": "Réussi",
+    "failed": "Échoué",
+    "skipped": "Non lancé",
+    "waiting": "En attente",
+    "couldntCheck": "Vérification impossible",
+    "notRun": "Non exécuté : une vérification précédente a suffi.",
+    "noAnswer": "Impossible de joindre le serveur de messagerie.",
+    "honest": "Gmail, Outlook, Yahoo et d’autres fournisseurs ne répondent pas toujours honnêtement à ces vérifications : considérez chaque résultat comme un indice solide, pas une garantie. Les adresses vérifiées ne sont pas conservées."
+  },
+  "checks": {
+    "format": "Format",
+    "disposable": "Jetable",
+    "domain": "Domaine",
+    "inbox": "Boîte personnelle",
+    "mailbox": "Boîte aux lettres"
+  },
+  "reasons": {
+    "valid": "Cette boîte existe et accepte les e-mails.",
+    "format": "Cette adresse est mal écrite et ne peut pas recevoir d’e-mails.",
+    "disposable": "C’est une boîte jetable, elle peut cesser de fonctionner bientôt.",
+    "typo": "Ce domaine ressemble à une faute de frappe et ne peut pas recevoir d’e-mails.",
+    "shared": "C’est une boîte partagée, le message n’atteindra peut-être pas une personne précise.",
+    "mailbox": "Le domaine existe, mais pas cette boîte aux lettres.",
+    "unknown": "Le domaine existe, mais son serveur de messagerie n’a pas répondu."
+  },
+  "hero": {
+    "title": "Vérifiez qu’un e-mail est réel avant d’envoyer.",
+    "sub": "Granska contrôle n’importe quelle adresse en quelques secondes (format, domaine et boîte aux lettres) pour que vos e-mails touchent de vraies personnes.",
+    "tryFree": "Essai gratuit"
+  },
+  "more": {
+    "items": {
+      "format": "Est-elle écrite comme une vraie adresse ?",
+      "disposable": "Vient-elle d’un service jetable ?",
+      "domain": "Le domaine peut-il recevoir des e-mails ?",
+      "inbox": "Est-ce une personne ou une boîte d’équipe ?",
+      "mailbox": "Le serveur de messagerie l’accepterait-il ?"
+    }
+  },
+  "features": {
+    "title": "Tout ce qu’il faut pour se fier à une liste.",
+    "sub": "Commencez avec une adresse. Passez aux listes complètes et à votre application quand vous êtes prêt.",
+    "typo": {
+      "title": "Correction des fautes",
+      "body": "« Vouliez-vous dire… ? » corrige les erreurs courantes en un geste."
+    },
+    "disposable": {
+      "title": "Détection des jetables",
+      "body": "Les boîtes jetables sont signalées avant d’entrer dans votre liste."
+    },
+    "bulk": {
+      "title": "Nettoyage de listes",
+      "body": "Importez un CSV et téléchargez uniquement les adresses valides.",
+      "valid": "2186 valides",
+      "checked": "2400 vérifiées"
+    },
+    "score": {
+      "title": "Score de délivrabilité",
+      "body": "Un score de 0 à 100 indique la probabilité que l’e-mail arrive.",
+      "label": "Livraison probable"
+    },
+    "api": {
+      "title": "API développeur",
+      "body": "Vérifiez des adresses depuis votre produit en une seule requête."
+    },
+    "privacy": {
+      "title": "Confidentialité d’abord",
+      "body": "Nous n’écrivons jamais à l’adresse et ne la conservons jamais.",
+      "sent": "E-mails envoyés",
+      "stored": "Adresses conservées"
+    }
+  },
+  "useCases": {
+    "title": "Comment les équipes utilisent Granska.",
+    "signups": {
+      "title": "Inscriptions",
+      "body": "Bloquez les faux comptes dans votre formulaire.",
+      "field": "E-mail professionnel",
+      "ok": "Valide ✓",
+      "button": "Créer un compte"
+    },
+    "sales": {
+      "title": "Prospection",
+      "body": "Vérifiez un contact avant un e-mail à froid.",
+      "to": "À",
+      "subject": "Une question sur votre lancement",
+      "line": "Bonjour Maria, j’ai vu que votre équipe recrute…",
+      "note": "Vérifié il y a 2 secondes"
+    },
+    "marketing": {
+      "title": "E-mail marketing",
+      "body": "Nettoyez une liste avant une campagne."
+    },
+    "invoices": {
+      "title": "Factures et commandes",
+      "body": "Assurez-vous que les reçus arrivent au client.",
+      "invoice": "Facture n° 1042",
+      "amount": "480,00 $",
+      "send": "Reçu prêt à être envoyé"
+    }
+  },
+  "pricing": {
+    "title": "Des tarifs simples.",
+    "sub": "Vérifiez des adresses isolées gratuitement. Payez quand il vous faut des listes ou l’API.",
+    "billing": "Période de facturation",
+    "monthly": "Mensuel",
+    "annually": "Annuel",
+    "save": "−20 %",
+    "perMonth": "/mois",
+    "billedAnnually": "Facturé annuellement",
+    "popular": "Le plus choisi",
+    "free": {
+      "name": "Gratuit",
+      "cta": "Commencer à vérifier",
+      "items": [
+        "10 vérifications par jour",
+        "Vérifications à l’unité",
+        "Correction des fautes",
+        "Sans connexion"
+      ]
+    },
+    "starter": {
+      "name": "Starter",
+      "cta": "Commencer",
+      "items": [
+        "2 000 vérifications par mois",
+        "Import et export CSV",
+        "Score de délivrabilité",
+        "Historique des vérifications",
+        "Assistance par e-mail"
+      ]
+    },
+    "pro": {
+      "name": "Pro",
+      "cta": "Choisir Pro",
+      "items": [
+        "15 000 vérifications par mois",
+        "Tout ce qu’inclut Starter",
+        "API développeur",
+        "Membres d’équipe",
+        "Vitesse prioritaire"
+      ]
+    },
+    "note1": "Besoin de plus ? Payez à l’usage avec des crédits qui n’expirent jamais.",
+    "note2": "Résiliez à tout moment. Sans engagement."
+  },
+  "faq": {
+    "title": "Vos questions, nos réponses.",
+    "items": [
+      {
+        "q": "La vérification gratuite est-elle vraiment gratuite ?",
+        "a": "Oui. Vous avez 10 vérifications par jour, sans connexion ni carte."
+      },
+      {
+        "q": "Envoyez-vous un e-mail à la personne ?",
+        "a": "Non. Granska demande au serveur de messagerie s’il accepterait l’adresse, puis se déconnecte avant tout envoi."
+      },
+      {
+        "q": "Quelle est sa précision ?",
+        "a": "La plupart des vérifications donnent une réponse claire, mais certains serveurs refusent de répondre ou acceptent toutes les adresses. Dans ces cas, nous affichons Risqué ou Inconnu plutôt que de deviner."
+      },
+      {
+        "q": "Que signifie « Risqué » ?",
+        "a": "L’adresse recevra probablement des e-mails, mais avec une réserve : boîte jetable, boîte d’équipe ou serveur qui accepte tout."
+      },
+      {
+        "q": "Puis-je l’utiliser dans mon application ?",
+        "a": "Oui. L’offre Pro inclut une API pour vérifier des adresses depuis vos formulaires et vos outils."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Écrivez à de vraies personnes.",
+    "small": "10 vérifications gratuites par jour. Sans carte."
+  },
+  "footer": {
+    "docs": "Documentation de l’API",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "copyright": "©  2026   Build by tibitus"
+  },
+  "auth": {
+    "createTab": "Créer un compte",
+    "loginTab": "Se connecter",
+    "tabs": "Créez un compte ou connectez-vous",
+    "google": "Continuer avec Google",
+    "or": "ou",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "jummai@example.com",
+    "continueEmail": "Continuer avec l’e-mail",
+    "sending": "Envoi…",
+    "planPill": "Offre {plan} · {price}",
+    "change": "Modifier",
+    "checkInbox": "Consultez votre boîte de réception",
+    "sent": "Nous avons envoyé un lien de connexion à {email}",
+    "resend": "Renvoyer le lien",
+    "resendIn": "Renvoyer le lien dans {seconds} s",
+    "resent": "Nous avons envoyé un nouveau lien.",
+    "differentEmail": "Utiliser une autre adresse",
+    "demoOpen": "Démo : ouvrir le lien de connexion",
+    "errorEmpty": "Saisissez votre adresse e-mail.",
+    "errorInvalid": "Cela ne ressemble pas à une adresse e-mail. Vérifiez-la et réessayez.",
+    "errorExpired": "Ce lien de connexion a expiré. Saisissez votre e-mail et nous en enverrons un nouveau.",
+    "errorGeneric": "Une erreur s’est produite. Veuillez réessayer."
+  },
+  "dashboard": {
+    "greeting": "Bonjour {name}",
+    "sub": "Voici où en est votre compte aujourd’hui.",
+    "creditsValue": "{count} vérifications sur {total} aujourd’hui",
+    "uploadNote": "{file} sélectionné. Les listes ne sont pas encore disponibles dans cette démo.",
+    "signOut": "Se déconnecter",
+    "inputTab": "Saisie",
+    "uploadTab": "Importer un CSV",
+    "modes": "Choisissez comment vérifier",
+    "dropPrefix": "Glissez-déposez ou",
+    "dropBrowse": "cliquez pour parcourir",
+    "dropHint": "CSV, TSV ou TXT · jusqu’à 20 Mo",
+    "dropHintLong": "CSV, TSV ou TXT · jusqu’à 20 Mo et 100 000 lignes · la première ligne est l’en-tête",
+    "fileProgress": "{type} / {done} sur {total}",
+    "errorType": "Choisissez un fichier CSV, TSV ou TXT.",
+    "errorSize": "Ce fichier dépasse 20 Mo. Choisissez-en un plus petit."
+  },
+  "soon": {
+    "docs": "Documentation de l’API",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "body": "Cette page arrive bientôt.",
+    "back": "Retour à l’accueil"
+  }
+}

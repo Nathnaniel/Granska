@@ -28,6 +28,7 @@ SKIP_MAILBOX=1 npm run dev
 | --- | --- |
 | `server.js` | The whole server: the five checks, rate limit, cache and metrics |
 | `api/index.js`, `vercel.json` | Entry point and routing for Vercel |
+| `web/` | Marketing site and sign-in flow, a separate Next.js app. See [web/README.md](web/README.md) |
 | `public/index.html` | The whole page, with inline CSS and JS |
 | `public/assets/` | Icons, artwork and fonts from the Figma design |
 | `data/disposable-domains.txt` | Throwaway domains, one per line |
