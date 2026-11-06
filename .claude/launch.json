@@ -8,17 +8,6 @@
         "run",
         "dev"
       ],
-      "port": 3000
-    },
-    {
-      "name": "granska-web",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run",
-        "dev",
-        "--prefix",
-        "web"
-      ],
       "port": 3001
     }
   ]

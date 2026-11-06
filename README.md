@@ -1,22 +1,26 @@
 # Granska
 
-One page where anyone can check whether an email address is real. No login, and no email is ever sent. See [Email-Verifier-PRD.md](Email-Verifier-PRD.md) for the full spec.
+Know an email is real before you hit send. A marketing website with a working email checker, built with Next.js and Tailwind. No email is ever sent. See [Email-Verifier-PRD.md](Email-Verifier-PRD.md) for the original spec.
 
 ## Run it
 
-Needs Node.js 20 or later. There is nothing to install.
+Needs Node.js 20 or later.
+
+```bash
+npm install
+```
 
 ```bash
 npm run dev
 ```
 
-Then open http://localhost:3000.
+Then open http://localhost:3001.
 
 ```bash
 npm test
 ```
 
-Most home and office networks block outgoing port 25. If yours does, every address that reaches the mailbox check waits about 10 seconds and then comes back Unknown. To skip that wait while developing:
+Most home and office networks block outgoing port 25. If yours does, an address that reaches the mailbox check waits about 10 seconds and comes back Unknown. To skip that wait while developing:
 
 ```bash
 SKIP_MAILBOX=1 npm run dev
@@ -26,75 +30,42 @@ SKIP_MAILBOX=1 npm run dev
 
 | Path | What it is |
 | --- | --- |
-| `server.js` | The whole server: the five checks, rate limit, cache and metrics |
-| `api/index.js`, `vercel.json` | Entry point and routing for Vercel |
-| `web/` | Marketing site and sign-in flow, a separate Next.js app. See [web/README.md](web/README.md) |
-| `public/index.html` | The whole page, with inline CSS and JS |
-| `public/assets/` | Icons, artwork and fonts from the Figma design |
+| `app/` | Pages for each language, plus `api/verify` and `healthz` |
+| `lib/verify-engine.mjs` | The five checks, rate limit, lookup cache and counts |
+| `lib/checks.ts` | The page's side of the check: types and the stream reader |
+| `lib/auth.ts` | Mock sign-in behind an `AuthClient` interface, ready for Supabase or Clerk |
+| `lib/plans.ts` | Plan prices |
+| `messages/*.json` | Every string, one file per language. `npm run check-i18n` confirms they match |
+| `app/globals.css` | Colour tokens from the Figma file, type and motion |
 | `data/disposable-domains.txt` | Throwaway domains, one per line |
 | `scripts/update-disposable.js` | Refreshes that list from [disposable-email-domains](https://github.com/disposable-email-domains/disposable-email-domains) |
 | `scripts/check-port25.js` | Tests whether a server can reach mail servers |
-| `deploy/` | Service, Caddy and settings files for a VPS |
-| `test/server.test.js` | Tests, including a fake mail server |
+| `test/verify.test.js` | Tests for the checks, including a fake mail server |
 
-`POST /api/verify` takes `{ "email": "..." }` and returns the verdict. With `Accept: application/x-ndjson` it streams one JSON line per finished check, then the verdict, which is how the page shows its steps. `GET /healthz` returns anonymous counts, which is where the PRD's success metrics are read from. They reset when the server restarts.
+`POST /api/verify` takes `{ "email": "..." }` and returns the verdict. With `Accept: application/x-ndjson` it streams one JSON line per finished check, then the verdict, which is how the page shows its steps. `GET /healthz` returns anonymous counts, which reset when the server restarts.
 
-The mailbox check stops at `RCPT TO` and quits, so `DATA` is never sent.
+The mailbox check stops at `RCPT TO` and quits, so `DATA` is never sent. Checked addresses are never logged or stored.
+
+**Not real yet:** sign-in, list upload, the daily check count and pricing checkout are simulated. The result in the home page hero is a fixed example until the visitor runs a check. The API docs, Privacy and Terms pages are placeholders.
 
 ## Configuration
 
-Set these as environment variables, or copy `.env.example` to `.env` and run `node --env-file=.env server.js`.
+Copy `.env.example` to `.env.local`, or set these as environment variables.
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `PORT` | `3000` | Port to listen on |
-| `HOST` | All interfaces | Address to listen on. Use `127.0.0.1` behind a proxy |
+| `NEXT_PUBLIC_SITE_URL` | None | Full site address for canonical, hreflang and Open Graph links |
 | `HELO_HOST` | Machine hostname | Name announced to mail servers |
 | `MAIL_FROM` | `verify@<HELO_HOST>` | Envelope sender for the mailbox check |
-| `TRUST_PROXY` | `0` | Set to `1` only behind your own reverse proxy |
 | `SMTP_TIMEOUT_MS` | `8000` | Time cap per mail server |
 | `SKIP_MAILBOX` | `0` | Set to `1` where port 25 is blocked |
 
 ## Deploying
 
-The app needs a server that can open outgoing connections on port 25. Hosts change these rules, so test before you rely on one.
-
-1. **Rent a small VPS** running Ubuntu or Debian, and point your domain's A record at it.
-2. **Install Node.js 20 or later and Caddy** on the server. Caddy provides HTTPS.
-3. **Copy the project over**, then test port 25 on the server:
-   ```bash
-   rsync -av --exclude .git --exclude .claude ./ root@YOUR_SERVER:/opt/granska/
-   ```
-   ```bash
-   cd /opt/granska && npm run check-port25
-   ```
-   If it fails, ask the host to open port 25, or use another host. Describe the use honestly: the server talks to mail servers to check addresses and sends no mail.
-4. **Set reverse DNS** for the server's IP to your domain in the host's control panel. Then rerun the check with the name set:
-   ```bash
-   cd /opt/granska && HELO_HOST=granska.example.com npm run check-port25
-   ```
-5. **Set up the service**, replacing `granska.example.com` in both copied files:
-   ```bash
-   useradd --system --no-create-home granska
-   cp /opt/granska/deploy/granska.env.example /etc/granska.env
-   cp /opt/granska/deploy/granska.service /etc/systemd/system/
-   cp /opt/granska/deploy/Caddyfile /etc/caddy/Caddyfile
-   ```
-   ```bash
-   systemctl daemon-reload && systemctl enable --now granska && systemctl reload caddy
-   ```
-6. **Refresh the throwaway list** on each deploy, then restart the service:
-   ```bash
-   cd /opt/granska && npm run update-disposable && systemctl restart granska
-   ```
-7. **Open the page and check an address you own.** Reading `/healthz` shows the running counts.
-
-The app must listen only on 127.0.0.1 behind Caddy, which the example settings do. If it were reachable directly, visitors could fake `X-Forwarded-For` and get around the rate limit.
-
-If port 25 can't be opened, set `SKIP_MAILBOX=1`. Checks 1 to 4 still run and the mailbox shows as Unknown.
-
-The rate limit, lookup cache and counts live in memory, so run one server process.
-
 ### Vercel
 
-Pushing to the connected branch deploys the app with no extra settings. Vercel blocks outgoing port 25, so [api/index.js](api/index.js) turns the mailbox check off there. Checks 1 to 4 still run, and any address that passes them comes back Unknown. Vercel also runs several copies of the app, so the rate limit and `/healthz` counts apply per copy rather than to the whole site. Use a VPS for real mailbox results.
+Pushing to the connected branch deploys the site, with `NEXT_PUBLIC_SITE_URL` set in the project. Vercel blocks outgoing port 25, so the mailbox check is off there: checks 1 to 4 still run, and any address that passes them comes back Unknown. Vercel also runs several copies of the app, so the rate limit and `/healthz` counts apply per copy.
+
+### A server of your own
+
+Real mailbox results need a host that allows outgoing port 25, with reverse DNS for its IP set to `HELO_HOST`. Test that with `npm run check-port25` on the server, then run `npm run build` and `npm start`. Keep the app behind a reverse proxy that appends `X-Forwarded-For`, because the rate limit reads that header. Run one process, because the limit, cache and counts live in memory. Run `npm run update-disposable` on each deploy.

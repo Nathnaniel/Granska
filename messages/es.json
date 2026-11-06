@@ -1,0 +1,271 @@
+{
+  "meta": {
+    "title": "Granska: comprueba que un correo es real antes de enviar",
+    "description": "Comprueba cualquier dirección de correo en segundos. Granska revisa el formato, el dominio y el buzón para que tus correos lleguen a personas reales.",
+    "getStarted": "Empieza con Granska",
+    "dashboard": "Tu panel | Granska",
+    "docs": "Documentación de la API | Granska",
+    "privacy": "Privacidad | Granska",
+    "terms": "Condiciones | Granska"
+  },
+  "nav": {
+    "home": "Inicio",
+    "features": "Funciones",
+    "useCases": "Casos de uso",
+    "pricing": "Precios",
+    "logIn": "Iniciar sesión",
+    "getStarted": "Empezar",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "language": "Idioma",
+    "skip": "Saltar al contenido",
+    "main": "Principal"
+  },
+  "status": {
+    "valid": "Válido",
+    "risky": "Riesgoso",
+    "invalid": "Inválido",
+    "unknown": "Desconocido"
+  },
+  "checker": {
+    "verify": "Verificar",
+    "checking": "Comprobando…",
+    "didYouMean": "¿Quisiste decir {address}?",
+    "errorEmpty": "Escribe una dirección de correo para comprobarla.",
+    "errorInvalid": "Eso no parece una dirección de correo. Revísala e inténtalo de nuevo.",
+    "passed": "Correcto",
+    "failed": "Fallido",
+    "skipped": "Sin ejecutar",
+    "waiting": "En espera",
+    "couldntCheck": "No se pudo comprobar",
+    "notRun": "No se ejecutó: una comprobación anterior ya dio la respuesta.",
+    "honest": "Gmail, Outlook, Yahoo y otros proveedores no siempre responden con sinceridad a estas comprobaciones, así que toma cada resultado como un indicio sólido y no como una garantía. Las direcciones que compruebas no se guardan.",
+    "sampleNote": "Resultado de ejemplo. Escribe cualquier dirección para hacer una comprobación real.",
+    "errorRate": "Demasiadas comprobaciones. Espera un minuto e inténtalo de nuevo.",
+    "errorServer": "Algo falló por nuestra parte. Inténtalo de nuevo."
+  },
+  "checks": {
+    "format": "Formato",
+    "disposable": "Desechable",
+    "domain": "Dominio",
+    "inbox": "Buzón personal",
+    "mailbox": "Buzón"
+  },
+  "reasons": {
+    "valid": "Este buzón existe y acepta correo.",
+    "format": "Esta dirección no está bien escrita, así que no puede recibir correo.",
+    "disposable": "Es un buzón desechable, así que podría dejar de funcionar pronto.",
+    "typo": "Este dominio parece una errata y no puede recibir correo.",
+    "shared": "Es un buzón compartido de equipo, así que puede no llegar a una sola persona.",
+    "mailbox": "El dominio es real, pero este buzón no existe.",
+    "unknown": "El dominio es real, pero su servidor de correo no respondió.",
+    "noDomain": "Este dominio no puede recibir correo.",
+    "dnsError": "La búsqueda del dominio no respondió, así que no se pudo confirmar esta dirección. Inténtalo de nuevo en un momento.",
+    "catchAll": "El servidor de correo acepta todas las direcciones, así que el correo puede llegar, pero no se puede confirmar este buzón.",
+    "unreachable": "El dominio es real, pero no se pudo contactar con su servidor de correo."
+  },
+  "hero": {
+    "title": "Comprueba que un correo es real antes de enviar.",
+    "sub": "Granska revisa cualquier dirección en segundos (formato, dominio y buzón) para que tus correos lleguen a personas reales.",
+    "tryFree": "Prueba gratis"
+  },
+  "more": {
+    "items": {
+      "format": "¿Está escrita como una dirección real?",
+      "disposable": "¿Es de un proveedor desechable?",
+      "domain": "¿Puede el dominio recibir correo?",
+      "inbox": "¿Es una persona o un buzón de equipo?",
+      "mailbox": "¿La aceptaría el servidor de correo?"
+    }
+  },
+  "features": {
+    "title": "Todo lo que necesitas para confiar en una lista.",
+    "sub": "Empieza con una dirección. Pasa a listas completas y a tu propia aplicación cuando quieras.",
+    "typo": {
+      "title": "Corrección de erratas",
+      "body": "«¿Quisiste decir…?» corrige los errores comunes con un toque."
+    },
+    "disposable": {
+      "title": "Detección de desechables",
+      "body": "Los buzones desechables se marcan antes de llegar a tu lista."
+    },
+    "bulk": {
+      "title": "Limpieza de listas",
+      "body": "Sube un CSV y descarga solo las direcciones válidas.",
+      "valid": "2186 válidas",
+      "checked": "2400 revisadas"
+    },
+    "score": {
+      "title": "Puntuación de entrega",
+      "body": "Una puntuación de 0 a 100 indica la probabilidad de que el correo llegue.",
+      "label": "Probable entrega"
+    },
+    "api": {
+      "title": "API para desarrolladores",
+      "body": "Comprueba direcciones desde tu producto con una sola petición."
+    },
+    "privacy": {
+      "title": "Privacidad ante todo",
+      "body": "Nunca escribimos a la dirección y nunca la guardamos.",
+      "sent": "Correos enviados",
+      "stored": "Direcciones guardadas"
+    }
+  },
+  "useCases": {
+    "title": "Así usan Granska los equipos.",
+    "signups": {
+      "title": "Registros",
+      "body": "Bloquea cuentas falsas en tu formulario.",
+      "field": "Correo de trabajo",
+      "ok": "Válido ✓",
+      "button": "Crear cuenta"
+    },
+    "sales": {
+      "title": "Ventas",
+      "body": "Comprueba un contacto antes de un correo en frío.",
+      "to": "Para",
+      "subject": "Una pregunta sobre vuestro lanzamiento",
+      "line": "Hola, María: he visto que tu equipo está contratando…",
+      "note": "Comprobado hace 2 segundos"
+    },
+    "marketing": {
+      "title": "Email marketing",
+      "body": "Limpia una lista antes de una campaña."
+    },
+    "invoices": {
+      "title": "Facturas y pedidos",
+      "body": "Asegúrate de que los recibos llegan al cliente.",
+      "invoice": "Factura n.º 1042",
+      "amount": "480,00 $",
+      "send": "Recibo listo para enviar"
+    }
+  },
+  "pricing": {
+    "title": "Precios sencillos.",
+    "sub": "Comprueba direcciones sueltas gratis. Paga cuando necesites listas o la API.",
+    "billing": "Periodo de facturación",
+    "monthly": "Mensual",
+    "annually": "Anual",
+    "save": "Ahorra un 20 %",
+    "perMonth": "/mes",
+    "billedAnnually": "Facturación anual",
+    "popular": "El más popular",
+    "free": {
+      "name": "Gratis",
+      "cta": "Empezar a comprobar",
+      "items": [
+        "10 comprobaciones al día",
+        "Comprobaciones sueltas",
+        "Corrección de erratas",
+        "Sin iniciar sesión"
+      ]
+    },
+    "starter": {
+      "name": "Starter",
+      "cta": "Empezar",
+      "items": [
+        "2.000 comprobaciones al mes",
+        "Subida y descarga de CSV",
+        "Puntuación de entrega",
+        "Historial de comprobaciones",
+        "Soporte por correo"
+      ]
+    },
+    "pro": {
+      "name": "Pro",
+      "cta": "Obtener Pro",
+      "items": [
+        "15.000 comprobaciones al mes",
+        "Todo lo de Starter",
+        "API para desarrolladores",
+        "Miembros de equipo",
+        "Velocidad prioritaria"
+      ]
+    },
+    "note1": "¿Necesitas más? Paga por uso con créditos que nunca caducan.",
+    "note2": "Cancela cuando quieras. Sin contratos."
+  },
+  "faq": {
+    "title": "Preguntas y respuestas.",
+    "items": [
+      {
+        "q": "¿La comprobación gratuita es realmente gratis?",
+        "a": "Sí. Tienes 10 comprobaciones al día sin iniciar sesión y sin tarjeta."
+      },
+      {
+        "q": "¿Escribís a la persona?",
+        "a": "No. Granska pregunta al servidor de correo si aceptaría la dirección y se desconecta antes de enviar nada."
+      },
+      {
+        "q": "¿Qué precisión tiene?",
+        "a": "La mayoría de las comprobaciones dan una respuesta clara, pero algunos servidores se niegan a contestar o aceptan todas las direcciones. En esos casos mostramos Riesgoso o Desconocido en lugar de adivinar."
+      },
+      {
+        "q": "¿Qué significa «Riesgoso»?",
+        "a": "La dirección probablemente reciba correo, pero con un inconveniente: puede ser un buzón desechable, un buzón de equipo o un servidor que lo acepta todo."
+      },
+      {
+        "q": "¿Puedo usarlo en mi aplicación?",
+        "a": "Sí. El plan Pro incluye una API para comprobar direcciones desde tus formularios y herramientas."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Empieza a escribir a personas reales.",
+    "small": "10 comprobaciones gratis al día. Sin tarjeta."
+  },
+  "footer": {
+    "docs": "Documentación de la API",
+    "privacy": "Privacidad",
+    "terms": "Condiciones",
+    "copyright": "©  2026   Build by tibitus"
+  },
+  "auth": {
+    "createTab": "Crear cuenta",
+    "loginTab": "Iniciar sesión",
+    "tabs": "Crea una cuenta o inicia sesión",
+    "google": "Continuar con Google",
+    "or": "o",
+    "emailLabel": "Correo",
+    "emailPlaceholder": "jummai@example.com",
+    "continueEmail": "Continuar con correo",
+    "sending": "Enviando…",
+    "planPill": "Plan {plan} · {price}",
+    "change": "Cambiar",
+    "checkInbox": "Revisa tu bandeja de entrada",
+    "sent": "Hemos enviado un enlace de acceso a {email}",
+    "resend": "Reenviar enlace",
+    "resendIn": "Reenviar enlace en {seconds} s",
+    "resent": "Hemos enviado un enlace nuevo.",
+    "differentEmail": "Usar otro correo",
+    "demoOpen": "Demo: abrir el enlace de acceso",
+    "errorEmpty": "Escribe tu dirección de correo.",
+    "errorInvalid": "Eso no parece una dirección de correo. Revísala e inténtalo de nuevo.",
+    "errorExpired": "Ese enlace de acceso ha caducado. Escribe tu correo y te enviaremos otro.",
+    "errorGeneric": "Algo ha fallado. Inténtalo de nuevo."
+  },
+  "dashboard": {
+    "greeting": "Hola, {name}",
+    "sub": "Así está tu cuenta hoy.",
+    "creditsValue": "{count} de {total} comprobaciones hoy",
+    "uploadNote": "{file} seleccionado. Las listas aún no están disponibles en esta demo.",
+    "signOut": "Cerrar sesión",
+    "inputTab": "Escribir",
+    "uploadTab": "Subir CSV",
+    "modes": "Elige cómo comprobar",
+    "dropPrefix": "Arrastra y suelta o",
+    "dropBrowse": "haz clic para buscar",
+    "dropHint": "CSV, TSV o TXT · hasta 20 MB",
+    "dropHintLong": "CSV, TSV o TXT · hasta 20 MB y 100.000 filas · la primera fila es el encabezado",
+    "fileProgress": "{type} / {done} de {total}",
+    "errorType": "Elige un archivo CSV, TSV o TXT.",
+    "errorSize": "Ese archivo supera los 20 MB. Elige uno más pequeño."
+  },
+  "soon": {
+    "docs": "Documentación de la API",
+    "privacy": "Privacidad",
+    "terms": "Condiciones",
+    "body": "Esta página estará disponible pronto.",
+    "back": "Volver al inicio"
+  }
+}
