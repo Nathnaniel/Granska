@@ -33,6 +33,7 @@ h3 { font-size: 15px; line-height: 21px; letter-spacing: 0.01em; }
 :focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
 /* The field around each input shows focus with its olive border. */
 input[type="email"]:focus-visible { outline: none; }
+dialog:focus-visible { outline: none; }
 button:not(:disabled), summary { cursor: pointer; }
 
 .landscape { background: #efe9d9 url("/landscape.jpg") center / cover no-repeat; }

@@ -30,6 +30,8 @@ export function Nav({ account = false }: { account?: boolean }) {
     { href: `/${locale}#use-cases`, label: t('nav.useCases') },
     { href: `/${locale}#pricing`, label: t('nav.pricing') },
   ];
+  // Focus goes to the drawer itself, so the close button isn't outlined the moment it opens.
+  const open = () => { dialog.current?.showModal(); dialog.current?.focus(); };
   const close = () => dialog.current?.close();
   const logIn = `/${locale}/get-started?tab=login`;
   const getStarted = `/${locale}/get-started`;
@@ -50,13 +52,13 @@ export function Nav({ account = false }: { account?: boolean }) {
           <div className="hidden lg:block">
             {account ? <Button onClick={logOut} className="font-display">{t('dashboard.signOut')}</Button> : <Button href={getStarted} className="font-display">{t('nav.getStarted')}</Button>}
           </div>
-          <button type="button" aria-label={t('nav.openMenu')} onClick={() => dialog.current?.showModal()} className="grid size-10 place-items-center rounded-full text-text lg:hidden">
+          <button type="button" aria-label={t('nav.openMenu')} onClick={open} className="grid size-10 place-items-center rounded-full text-text lg:hidden">
             <MenuIcon width={20} height={20} />
           </button>
         </div>
       </div>
 
-      <dialog ref={dialog} data-lenis-prevent aria-label={t('nav.main')} className="m-0 h-dvh max-h-none w-full max-w-none bg-white p-0 lg:hidden">
+      <dialog ref={dialog} tabIndex={-1} data-lenis-prevent aria-label={t('nav.main')} className="m-0 h-dvh max-h-none w-full max-w-none bg-white p-0 lg:hidden">
         <div className="flex h-full flex-col px-6 pb-6">
           <div className="flex h-20 shrink-0 items-center justify-between">
             <Logo />
