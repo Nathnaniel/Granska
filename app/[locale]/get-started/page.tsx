@@ -14,7 +14,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function GetStarted({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return (
-    <div className="landscape flex min-h-dvh flex-col">
+    <div className="flex min-h-dvh flex-col">
+      {/* Pinned to the largest screen height, so phone address bars and keyboards never uncover it. */}
+      <div aria-hidden className="landscape fixed inset-x-0 top-0 -z-10 h-lvh" />
       <div className="mx-auto flex h-20 w-full max-w-[1080px] items-center justify-between px-4 md:px-6">
         <Link href={`/${locale}`} aria-label="Granska"><Logo /></Link>
         <LanguageSwitcher />
