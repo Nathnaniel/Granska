@@ -40,7 +40,7 @@ export function Features() {
   return (
     <Section id="features">
       <Reveal><Intro title={t('features.title')} body={t('features.sub')} /></Reveal>
-      <div className="mt-10 grid max-w-[1008px] gap-x-3 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-10 grid max-w-[1008px] grid-cols-1 gap-x-3 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
         <Reveal>
           <Feature title={t('features.typo.title')} body={t('features.typo.body')}>
             <Tile className="rounded-[20px]">

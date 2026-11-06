@@ -34,7 +34,7 @@ export function UseCases() {
     <Section id="use-cases">
       <div className="mx-auto max-w-[832px]">
       <Reveal><Intro title={t('useCases.title')} /></Reveal>
-      <div className="mt-10 grid gap-6 md:grid-cols-2">
+      <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
         <Reveal>
           <UseCase title={t('useCases.signups.title')} body={t('useCases.signups.body')}>
             <p className="text-xs text-soft">{t('useCases.signups.field')}</p>
