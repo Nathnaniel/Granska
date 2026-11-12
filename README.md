@@ -43,11 +43,11 @@ SKIP_MAILBOX=1 npm run dev
 | `scripts/check-port25.js` | Tests whether a server can reach mail servers |
 | `test/verify.test.js` | Tests for the checks, including a fake mail server |
 
-`POST /api/verify` takes `{ "email": "..." }` and returns the verdict. With `Accept: application/x-ndjson` it streams one JSON line per finished check, then the verdict, which is how the page shows its steps. `GET /healthz` returns anonymous counts, which reset when the server restarts.
+`POST /api/verify/batch` takes `{ "emails": [...] }` with up to 25 addresses and returns a verdict for each; the page sends an uploaded list through it in batches. `POST /api/verify` takes `{ "email": "..." }` and returns the verdict. With `Accept: application/x-ndjson` it streams one JSON line per finished check, then the verdict, which is how the page shows its steps. `GET /healthz` returns anonymous counts, which reset when the server restarts.
 
 The mailbox check stops at `RCPT TO` and quits, so `DATA` is never sent. Checked addresses are never logged or stored.
 
-**Not real yet:** list upload and pricing checkout are simulated, and the daily limit is counted but not enforced. The result in the home page hero is a fixed example until the visitor runs a check. The API docs, Privacy and Terms pages are placeholders.
+**Not real yet:** sign-in is switched off, and pricing checkout is simulated. Uploaded lists are checked for real, up to 1,000 addresses a file and 1,000 an hour per visitor. The result in the home page hero is a fixed example until the visitor runs a check. The API docs, Privacy and Terms pages are placeholders.
 
 ## Configuration
 

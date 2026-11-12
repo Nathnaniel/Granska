@@ -501,7 +501,8 @@ function createApp(deps) {
   return http.createServer(async (req, res) => {
     const chunks = [];
     for await (const chunk of req) chunks.push(chunk);
-    const response = req.url === '/healthz' ? handlers.health() : await handlers.post(new Request(`http://localhost${req.url}`, {
+    const handle = req.url === '/api/verify/batch' ? handlers.batch : handlers.post;
+    const response = req.url === '/healthz' ? handlers.health() : await handle(new Request(`http://localhost${req.url}`, {
       method: req.method, headers: req.headers, body: chunks.length ? Buffer.concat(chunks) : undefined,
     }));
     res.writeHead(response.status, Object.fromEntries(response.headers));
@@ -625,6 +626,55 @@ describe('HTTP', () => {
     const data = await res.json();
     assert.equal(res.status, 429);
     assert.equal(data.error, 'Too many checks. Wait a minute and try again.');
+    assert.ok(Number(res.headers.get('retry-after')) > 0);
+  });
+});
+
+describe('list batches', () => {
+  let server;
+  let base;
+  const originalLog = console.log;
+
+  before(async () => {
+    console.log = () => {};
+    server = createApp({
+      verify: (email) => verifyEmail(email, {
+        disposable: new Set(['mailinator.com']),
+        lookup: async () => ({ status: 'ok', hosts: ['mx.test'] }),
+        mailbox: async () => 'accepted',
+        skipMailbox: false,
+      }),
+      listLimiter: createRateLimiter({ limit: 20, windowMs: 60000 }),
+    });
+    await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+    base = `http://127.0.0.1:${server.address().port}/api/verify/batch`;
+  });
+
+  after(async () => {
+    console.log = originalLog;
+    await new Promise((resolve) => server.close(resolve));
+  });
+
+  const send = (body) => fetch(base, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+
+  test('returns a verdict for each address, in order', async () => {
+    const res = await send({ emails: ['jo@example.com', 'x@mailinator.com', 'nope'] });
+    const { results } = await res.json();
+    assert.equal(res.status, 200);
+    assert.deepEqual(results.map((r) => r.status), ['valid', 'risky', 'invalid']);
+    assert.deepEqual(results.map((r) => r.reasonKey), ['valid', 'disposable', 'format']);
+  });
+
+  test('refuses empty, oversized and malformed batches', async () => {
+    assert.equal((await send({ emails: [] })).status, 400);
+    assert.equal((await send({ emails: Array(26).fill('a@example.com') })).status, 400);
+    assert.equal((await send({ emails: [1, 2] })).status, 400);
+    assert.equal((await send({})).status, 400);
+  });
+
+  test('counts every address against the hourly list allowance', async () => {
+    const res = await send({ emails: Array(25).fill('a@example.com') });
+    assert.equal(res.status, 429);
     assert.ok(Number(res.headers.get('retry-after')) > 0);
   });
 });
