@@ -19,7 +19,7 @@ export default async function Info({ params }: { params: Promise<{ page: string 
   const { page } = await params;
   return (
     <>
-      <Nav />
+      <Nav bare />
       <main id="content"><InfoPage page={page as Page} /></main>
       <Footer />
     </>

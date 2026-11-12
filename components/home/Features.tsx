@@ -43,7 +43,7 @@ export function Features() {
       <div className="mt-10 grid max-w-[1008px] grid-cols-1 gap-x-3 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
         <Reveal>
           <Feature title={t('features.typo.title')} body={t('features.typo.body')}>
-            <Tile className="rounded-[20px]">
+            <Tile>
               <p className="text-soft line-through">sara@gmial.com</p>
               <p className="mt-1 font-medium text-text">{t('checker.didYouMean', { address: 'sara@gmail.com' })}</p>
             </Tile>
@@ -59,7 +59,7 @@ export function Features() {
         </Reveal>
         <Reveal>
           <Feature title={t('features.bulk.title')} body={t('features.bulk.body')}>
-            <div className="flex w-full items-center gap-[11px] rounded-2xl border-[0.5px] border-edge bg-white p-4 font-display">
+            <div className="flex w-full items-center gap-[11px] rounded-xl border-[0.5px] border-edge bg-white p-4 font-display">
               <span className="grid size-[27px] shrink-0 place-items-center rounded-lg border-[0.5px] border-edge"><img src="/icons/csv.svg" width={11} height={11} alt="" /></span>
               <div className="min-w-0 flex-1">
                 <p className="flex items-end justify-between gap-2 text-[10px] leading-3 text-text">leads october <span className="text-[7px]">{t('features.bulk.valid')}</span></p>
@@ -79,7 +79,7 @@ export function Features() {
         </Reveal>
         <Reveal>
           <Feature title={t('features.api.title')} body={t('features.api.body')} stage="px-5 py-2.5">
-            <pre className="w-full overflow-hidden rounded-2xl border-[0.5px] border-line bg-white p-3 font-mono text-[11px] leading-relaxed text-text">
+            <pre className="w-full overflow-hidden rounded-xl border-[0.5px] border-line bg-white p-3 font-mono text-[11px] leading-relaxed text-text">
 {`GET /v1/verify?email=anna@fjordlabs.se
 
 {

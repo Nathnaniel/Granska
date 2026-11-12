@@ -238,7 +238,6 @@
     "resendIn": "Reenviar enlace en {seconds} s",
     "resent": "Hemos enviado un enlace nuevo.",
     "differentEmail": "Usar otro correo",
-    "demoOpen": "Demo: abrir el enlace de acceso",
     "errorEmpty": "Escribe tu dirección de correo.",
     "errorInvalid": "Eso no parece una dirección de correo. Revísala e inténtalo de nuevo.",
     "errorExpired": "Ese enlace de acceso ha caducado. Escribe tu correo y te enviaremos otro.",

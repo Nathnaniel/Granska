@@ -74,7 +74,7 @@ export function CheckerForm({ state, aside, active = false }: { state: CheckerSt
   return (
     <form noValidate className="group" onSubmit={(e: FormEvent) => { e.preventDefault(); if (!running) void check(value); }}>
       <div className="relative">
-        {aside && <p className="absolute top-0 right-0 font-display text-xs leading-4 text-soft">{aside}</p>}
+        {aside && <p className="absolute top-0 right-0 font-display text-xs leading-4 text-soft tabular-nums">{aside}</p>}
         <EmailField
           id={id} inputRef={input} label={t('auth.emailLabel')} autoComplete="off" value={value}
           placeholder={t('auth.emailPlaceholder')} aria-invalid={!!error} aria-describedby={error ? `${id}-error` : undefined}
@@ -83,8 +83,8 @@ export function CheckerForm({ state, aside, active = false }: { state: CheckerSt
       </div>
       {message && <p id={`${id}-error`} role="alert" className="mt-2 text-sm text-ink"><span aria-hidden className="mr-1.5 inline-block size-1.5 rounded-full bg-invalid align-middle" />{t(`checker.${message}`)}</p>}
       <button
-        type="submit" disabled={running}
-        className={`mt-5 flex h-[38px] w-full items-center justify-center gap-2 rounded-[40px] font-display text-sm transition-colors disabled:cursor-not-allowed ${ready ? 'bg-brand text-white' : 'bg-idle text-soft group-focus-within:bg-brand group-focus-within:text-white'}`}
+        type="submit" disabled={running || !ready}
+        className={`mt-5 flex h-[38px] w-full items-center justify-center gap-2 rounded-[40px] font-display text-sm transition-colors disabled:cursor-not-allowed ${ready ? 'bg-brand text-white' : 'bg-idle text-soft'}`}
       >
         <ArrowIcon /> {running ? t('checker.checking') : t('checker.verify')}
       </button>

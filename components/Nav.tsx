@@ -11,7 +11,8 @@ import { CrossIcon, MenuIcon } from './ui/icons';
 import { Logo } from './ui/Logo';
 import { PageLink } from './ui/PageLink';
 
-export function Nav({ account = false }: { account?: boolean }) {
+// bare shows only the logo and language, for the checker-only site.
+export function Nav({ account = false, bare = false }: { account?: boolean; bare?: boolean }) {
   const t = useT();
   const locale = useLocale();
   const router = useRouter();
@@ -36,30 +37,30 @@ export function Nav({ account = false }: { account?: boolean }) {
   const close = () => dialog.current?.close();
   const logIn = `/${locale}/get-started?tab=login`;
   const getStarted = `/${locale}/get-started`;
-  const logOut = () => { close(); auth.signOut(); router.push(`/${locale}`); };
+  const logOut = async () => { close(); await auth.signOut(); router.push(`/${locale}`); };
 
   return (
     <header className={`sticky top-0 z-40 transition-colors duration-200 ${scrolled ? 'bg-white/60 backdrop-blur-md' : ''}`}>
       <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-3 focus:py-2 focus:text-sm">{t('nav.skip')}</a>
       <div className="mx-auto flex h-20 max-w-[1080px] items-center justify-between gap-4 px-6">
         <Link href={`/${locale}`} aria-label="Granska"><Logo /></Link>
-        <nav aria-label={t('nav.main')} className="hidden items-center gap-6 lg:flex">
+        {!bare && <nav aria-label={t('nav.main')} className="hidden items-center gap-6 lg:flex">
           {links.map((link) => (
             <PageLink key={link.href} href={link.href} className="font-display text-sm text-soft transition-colors hover:text-text">{link.label}</PageLink>
           ))}
-        </nav>
+        </nav>}
         <div className="flex items-center gap-2 lg:gap-3">
           <LanguageSwitcher className="max-lg:bg-idle max-lg:font-sans" />
-          <div className="hidden lg:block">
+          {!bare && <div className="hidden lg:block">
             {account ? <Button onClick={logOut} className="font-display">{t('dashboard.signOut')}</Button> : <Button href={getStarted} className="font-display">{t('nav.getStarted')}</Button>}
-          </div>
-          <button type="button" aria-label={t('nav.openMenu')} onClick={open} className="grid size-10 place-items-center rounded-full text-text lg:hidden">
+          </div>}
+          {!bare && <button type="button" aria-label={t('nav.openMenu')} onClick={open} className="grid size-10 place-items-center rounded-full text-text lg:hidden">
             <MenuIcon width={20} height={20} />
-          </button>
+          </button>}
         </div>
       </div>
 
-      <dialog ref={dialog} tabIndex={-1} data-lenis-prevent aria-label={t('nav.main')} className="m-0 h-dvh max-h-none w-full max-w-none bg-white p-0 lg:hidden">
+      {!bare && <dialog ref={dialog} tabIndex={-1} data-lenis-prevent aria-label={t('nav.main')} className="m-0 h-dvh max-h-none w-full max-w-none bg-white p-0 lg:hidden">
         <div className="flex h-full flex-col px-6 pb-6">
           <div className="flex h-20 shrink-0 items-center justify-between">
             <Logo />
@@ -81,7 +82,7 @@ export function Nav({ account = false }: { account?: boolean }) {
             )}
           </div>
         </div>
-      </dialog>
+      </dialog>}
     </header>
   );
 }

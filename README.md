@@ -33,7 +33,8 @@ SKIP_MAILBOX=1 npm run dev
 | `app/` | Pages for each language, plus `api/verify` and `healthz` |
 | `lib/verify-engine.mjs` | The five checks, rate limit, lookup cache and counts |
 | `lib/checks.ts` | The page's side of the check: types and the stream reader |
-| `lib/auth.ts` | Mock sign-in behind an `AuthClient` interface, ready for Supabase or Clerk |
+| `lib/auth.ts` | Sign-in and daily check counts through Supabase |
+| `supabase/migrations/` | Database tables, access rules and functions |
 | `lib/plans.ts` | Plan prices |
 | `messages/*.json` | Every string, one file per language. `npm run check-i18n` confirms they match |
 | `app/globals.css` | Colour tokens from the Figma file, type and motion |
@@ -46,7 +47,7 @@ SKIP_MAILBOX=1 npm run dev
 
 The mailbox check stops at `RCPT TO` and quits, so `DATA` is never sent. Checked addresses are never logged or stored.
 
-**Not real yet:** sign-in, list upload, the daily check count and pricing checkout are simulated. The result in the home page hero is a fixed example until the visitor runs a check. The API docs, Privacy and Terms pages are placeholders.
+**Not real yet:** list upload and pricing checkout are simulated, and the daily limit is counted but not enforced. The result in the home page hero is a fixed example until the visitor runs a check. The API docs, Privacy and Terms pages are placeholders.
 
 ## Configuration
 
@@ -55,6 +56,8 @@ Copy `.env.example` to `.env.local`, or set these as environment variables.
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | None | Full site address for canonical, hreflang and Open Graph links |
+| `NEXT_PUBLIC_SUPABASE_URL` | None | Supabase project address |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | None | Supabase publishable key, safe to expose |
 | `HELO_HOST` | Machine hostname | Name announced to mail servers |
 | `MAIL_FROM` | `verify@<HELO_HOST>` | Envelope sender for the mailbox check |
 | `SMTP_TIMEOUT_MS` | `8000` | Time cap per mail server |

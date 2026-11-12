@@ -9,7 +9,7 @@ export function EmailField({ id, label, inputRef, ...rest }:
         <img src="/icons/mail.svg" width={14} height={14} alt="" className="shrink-0" />
         <input
           ref={inputRef} id={id} type="email" inputMode="email" autoCapitalize="off" spellCheck={false}
-          className="h-full w-full min-w-0 bg-transparent font-display text-xs text-text outline-none placeholder:text-faint"
+          className="h-full w-full min-w-0 bg-transparent font-display text-base text-text outline-none sm:text-xs placeholder:text-faint"
           {...rest}
         />
       </div>

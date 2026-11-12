@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState, type FormEvent } from 'react';
 import { Button } from '@/components/ui/Button';
 import { EmailField } from '@/components/ui/EmailField';
@@ -21,7 +21,6 @@ export function AuthCard() {
   const t = useT();
   const m = useMessages();
   const locale = useLocale();
-  const router = useRouter();
   const params = useSearchParams();
 
   const [tab, setTab] = useState<Tab>(params.get('tab') === 'login' ? 'login' : 'create');
@@ -40,12 +39,12 @@ export function AuthCard() {
 
   const plan = params.get('plan');
   const billing = params.get('billing') === 'annual' ? 'annual' : 'monthly';
-  const dashboard = `/${locale}/dashboard`;
+  const dashboardUrl = () => `${window.location.origin}/${locale}/dashboard`;
 
   async function send(address: string) {
     setBusy(true);
     try {
-      await auth.sendMagicLink(address);
+      await auth.sendMagicLink(address, dashboardUrl());
       setSentTo(address);
       setCooldown(RESEND_SECONDS);
     } catch {
@@ -67,8 +66,7 @@ export function AuthCard() {
   async function google() {
     setBusy(true);
     try {
-      await auth.signInWithGoogle();
-      router.push(dashboard);
+      await auth.signInWithGoogle(dashboardUrl());
     } catch {
       setError('errorGeneric');
       setBusy(false);
@@ -76,7 +74,7 @@ export function AuthCard() {
   }
 
   return (
-    <div className="w-full max-w-[400px] rounded-3xl bg-white px-5 py-[46px] sm:px-8">
+    <div className="w-full max-w-[400px] rounded-2xl bg-white shadow-[0_6px_24px_rgb(54_54_54/0.1)] px-5 py-[46px] sm:px-8">
       {isPlan(plan) && (
         <div className="mb-4 flex items-center justify-between gap-2">
           <Pill className="bg-tan/25 text-ink">
@@ -88,10 +86,9 @@ export function AuthCard() {
 
       {sentTo ? (
         <div aria-live="polite">
-          <h1 className="text-[24px]!">{t('auth.checkInbox')}</h1>
+          <h1 className="text-2xl!">{t('auth.checkInbox')}</h1>
           <p className="mt-2 text-sm break-words text-soft">{t('auth.sent', { email: sentTo })}</p>
           <div className="mt-5 grid gap-2">
-            <Button onClick={async () => { await auth.completeMagicLink(sentTo); router.push(dashboard); }}>{t('auth.demoOpen')}</Button>
             <Button
               variant="secondary" disabled={cooldown > 0 || busy}
               onClick={async () => { await send(sentTo); setResent(true); }}

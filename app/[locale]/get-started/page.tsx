@@ -1,29 +1,7 @@
-import Link from 'next/link';
-import { Suspense } from 'react';
-import { AuthCard } from '@/components/auth/AuthCard';
-import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import { Logo } from '@/components/ui/Logo';
-import { isLocale } from '@/lib/locales';
-import { pageMetadata } from '@/lib/seo';
+import { redirect } from 'next/navigation';
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+// Sign-in is switched off for now, so this page sends visitors to the checker.
+export default async function GetStartedRedirect({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  return isLocale(locale) ? pageMetadata(locale, '/get-started', 'meta.getStarted') : {};
-}
-
-export default async function GetStarted({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
-  return (
-    <div className="flex min-h-dvh flex-col">
-      {/* Pinned to the largest screen height, so phone address bars and keyboards never uncover it. */}
-      <div aria-hidden className="landscape fixed inset-x-0 top-0 -z-10 h-lvh" />
-      <div className="mx-auto flex h-20 w-full max-w-[1080px] items-center justify-between px-4 md:px-6">
-        <Link href={`/${locale}`} aria-label="Granska"><Logo /></Link>
-        <LanguageSwitcher />
-      </div>
-      <main id="content" className="flex flex-1 items-center justify-center px-4 py-10">
-        <Suspense><AuthCard /></Suspense>
-      </main>
-    </div>
-  );
+  redirect(`/${locale}`);
 }

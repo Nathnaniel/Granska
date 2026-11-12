@@ -3,7 +3,7 @@ import { PageLink } from './PageLink';
 
 type Variant = 'primary' | 'secondary' | 'dark';
 
-const BASE = 'inline-flex h-10 items-center justify-center gap-2 rounded-[48px] px-5 text-sm font-medium whitespace-nowrap transition-[filter,background-color] duration-200 disabled:cursor-not-allowed disabled:opacity-60';
+const BASE = 'inline-flex h-10 items-center justify-center gap-2 rounded-[48px] px-[22px] text-sm whitespace-nowrap transition-[filter,background-color] duration-200 disabled:cursor-not-allowed disabled:opacity-60';
 const VARIANTS: Record<Variant, string> = {
   primary: 'bg-brand text-white hover:brightness-95',
   secondary: 'bg-idle text-soft hover:bg-[#eeeeee]',

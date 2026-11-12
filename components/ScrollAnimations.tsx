@@ -36,10 +36,16 @@ export function ScrollAnimations() {
     });
 
     // The checker and FAQ change the page's height, which moves every trigger below them.
-    const resize = new ResizeObserver(() => ScrollTrigger.refresh());
+    // Waits for the change to settle, so an opening FAQ answer doesn't refresh every frame.
+    let settle: ReturnType<typeof setTimeout>;
+    const resize = new ResizeObserver(() => {
+      clearTimeout(settle);
+      settle = setTimeout(() => ScrollTrigger.refresh(), 200);
+    });
     resize.observe(document.body);
 
     return () => {
+      clearTimeout(settle);
       resize.disconnect();
       motion.revert();
     };

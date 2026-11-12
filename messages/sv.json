@@ -66,7 +66,7 @@
   },
   "hero": {
     "title": "Se att en e-postadress är äkta innan du skickar.",
-    "sub": "Granska kontrollerar vilken adress som helst på några sekunder – format, domän och brevlåda – så att dina mejl når riktiga människor.",
+    "sub": "Granska kontrollerar vilken adress som helst på några sekunder format, domän och brevlåda så att dina mejl når riktiga människor.",
     "tryFree": "Testa gratis"
   },
   "more": {
@@ -238,7 +238,6 @@
     "resendIn": "Skicka länken igen om {seconds} s",
     "resent": "Vi skickade en ny länk.",
     "differentEmail": "Använd en annan e-postadress",
-    "demoOpen": "Demo: öppna inloggningslänken",
     "errorEmpty": "Skriv din e-postadress.",
     "errorInvalid": "Det ser inte ut som en e-postadress. Kontrollera den och försök igen.",
     "errorExpired": "Inloggningslänken har gått ut. Skriv din e-postadress så skickar vi en ny.",

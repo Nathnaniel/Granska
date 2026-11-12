@@ -238,7 +238,6 @@
     "resendIn": "Renvoyer le lien dans {seconds} s",
     "resent": "Nous avons envoyé un nouveau lien.",
     "differentEmail": "Utiliser une autre adresse",
-    "demoOpen": "Démo : ouvrir le lien de connexion",
     "errorEmpty": "Saisissez votre adresse e-mail.",
     "errorInvalid": "Cela ne ressemble pas à une adresse e-mail. Vérifiez-la et réessayez.",
     "errorExpired": "Ce lien de connexion a expiré. Saisissez votre e-mail et nous en enverrons un nouveau.",

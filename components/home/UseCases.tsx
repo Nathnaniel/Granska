@@ -13,7 +13,7 @@ function UseCase({ title, body, children }: { title: string; body: string; child
   return (
     <div>
       <ImageCard parallax className="p-4 sm:p-8">
-        <div className="rounded-3xl bg-white p-4 text-sm">{children}</div>
+        <div className="rounded-2xl bg-white p-4 text-sm shadow-[0_6px_24px_rgb(54_54_54/0.1)]">{children}</div>
       </ImageCard>
       <h3 className="mt-4">{title}</h3>
       <p className="mt-1 text-sm text-soft">{body}</p>

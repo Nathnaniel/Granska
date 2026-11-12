@@ -1,22 +1,7 @@
-import { Dashboard } from '@/components/Dashboard';
-import { Footer } from '@/components/Footer';
-import { Nav } from '@/components/Nav';
-import { CornerArt } from '@/components/ui/CornerArt';
-import { isLocale } from '@/lib/locales';
-import { pageMetadata } from '@/lib/seo';
+import { redirect } from 'next/navigation';
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+// The checker now opens the site, so old dashboard links go there.
+export default async function DashboardRedirect({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  return isLocale(locale) ? pageMetadata(locale, '/dashboard', 'meta.dashboard', false) : {};
-}
-
-export default function DashboardPage() {
-  return (
-    <>
-      <CornerArt />
-      <Nav account />
-      <main id="content"><Dashboard /></main>
-      <Footer />
-    </>
-  );
+  redirect(`/${locale}`);
 }

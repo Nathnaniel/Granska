@@ -8,7 +8,7 @@ export function Intro({ title, body }: { title: string; body?: string }) {
   return (
     <div className="max-w-[620px]">
       <h2>{title}</h2>
-      {body && <p className="mt-3 text-soft">{body}</p>}
+      {body && <p className="mt-3 text-base text-soft">{body}</p>}
     </div>
   );
 }

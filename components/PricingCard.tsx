@@ -7,12 +7,12 @@ export function PricingCard({ name, price, period, note, items, cta, href, badge
   cta: string; href: string; badge?: string; highlighted?: boolean;
 }) {
   return (
-    <div className="flex h-full flex-col rounded-3xl bg-white p-6">
+    <div className="flex h-full flex-col rounded-2xl bg-white p-6">
       <div className="flex h-6 items-center justify-between gap-2">
         <h3>{name}</h3>
         {badge && <Pill className="bg-tan/25 text-ink">{badge}</Pill>}
       </div>
-      <p className="mt-4 text-[32px] leading-8 font-medium tracking-[0.01em] text-text">
+      <p className="mt-4 text-[2rem] leading-none font-medium tracking-[-0.01em] text-text tabular-nums">
         <span suppressHydrationWarning>{price}</span>
         {period && <span className="ml-1 text-sm font-normal tracking-normal text-soft">{period}</span>}
       </p>

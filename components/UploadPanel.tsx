@@ -60,13 +60,13 @@ export function UploadPanel() {
       <label
         htmlFor={id} data-active={dragging || undefined}
         onDragOver={(e) => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={onDrop}
-        className="group flex min-h-[170px] cursor-pointer flex-col items-center justify-center gap-3 rounded-3xl border-[1.5px] border-dashed border-edge px-5 py-6 text-center font-display transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink hover:border-brand hover:bg-[#fefffc] data-active:border-brand data-active:bg-[#fefffc]"
+        className="group flex min-h-[170px] cursor-pointer flex-col items-center justify-center gap-3 rounded-3xl border-[1.5px] border-dashed border-edge px-5 py-6 text-center font-display transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink hover:border-brand data-active:border-brand data-active:bg-[#fefffc]"
       >
         <IconBox src="/icons/file-export.svg" className="border-edge group-hover:border-brand group-data-active:border-brand" />
         <span>
           <span className="block text-sm leading-4 text-text">{t('dashboard.dropPrefix')} <span className="text-brand">{t('dashboard.dropBrowse')}</span></span>
-          <span className="mt-2 block text-[10px] leading-[1.4] tracking-[0.2px] text-hint group-hover:hidden group-data-active:hidden">{t('dashboard.dropHint')}</span>
-          <span className="mt-2 hidden text-[10px] leading-[1.4] tracking-[0.2px] text-hint group-hover:block group-data-active:block">{t('dashboard.dropHintLong')}</span>
+          <span className="mt-2 block text-xs text-hint group-data-active:hidden">{t('dashboard.dropHint')}</span>
+          <span className="mt-2 hidden text-xs text-hint group-data-active:block">{t('dashboard.dropHintLong')}</span>
         </span>
       </label>
 
@@ -80,10 +80,10 @@ export function UploadPanel() {
           <div className="min-w-0 flex-1">
             <div className="flex items-end justify-between gap-3">
               <p className="truncate text-sm leading-4 text-text">{file.name}</p>
-              <p className="text-[10px] leading-[1.4] tracking-[0.2px] text-text">{progress}%</p>
+              <p className="text-xs text-text tabular-nums">{progress}%</p>
             </div>
             <div role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} aria-label={file.name} className="mt-1"><TickBar value={progress} /></div>
-            <p className="mt-2 text-[10px] leading-[1.4] tracking-[0.2px] text-hint">
+            <p className="mt-2 text-xs text-hint">
               {t('dashboard.fileProgress', { type: kind, done: megabytes((file.size * progress) / 100), total: megabytes(file.size) })}
             </p>
           </div>
